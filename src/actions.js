@@ -31,7 +31,7 @@ export function fetchIndividual(params) {
 }
 
 export function deleteIndividual(individual, clientMutationLabel) {
-    const individualUuids = `uuids: ["${individual?.id}"]`;
+    const individualUuids = `ids: ["${individual?.id}"]`;
     const mutation = formatMutation("deleteIndividual", individualUuids, clientMutationLabel);
     const requestedDateTime = new Date();
     return graphql(

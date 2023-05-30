@@ -18,7 +18,6 @@
     "firstName": "First Name",
     "lastName": "Last Name",
     "dob": "Day of birth",
-    "json_ext": "Additional fields",
     "mandatoryFieldsEmptyError": "* These fields are required",
     "delete": {
       "confirm": {

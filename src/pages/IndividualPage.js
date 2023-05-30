@@ -85,7 +85,7 @@ const IndividualPage = ({
     return true;
   }
 
-  const canSave = () => !isMandatoryFieldsEmpty() && isJsonString(editedIndividual?.jsonExt);
+  const canSave = () => !isMandatoryFieldsEmpty();
 
   const handleSave = () => {
     updateIndividual(

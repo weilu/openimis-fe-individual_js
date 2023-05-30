@@ -22,7 +22,7 @@ const styles = theme => ({
 
 class IndividualHeadPanel extends FormPanel {
     render() {
-        const { intl, edited, classes, mandatoryFieldsEmpty, setJsonExtValid } = this.props;
+        const { intl, edited, classes, mandatoryFieldsEmpty } = this.props;
         const individual = { ...edited };
         return (
             <Fragment>
@@ -79,15 +79,6 @@ class IndividualHeadPanel extends FormPanel {
                       required
                       onChange={v => this.updateAttribute('dob', v)}
                       value={individual?.dob}
-                    />
-                  </Grid>
-                  <Grid item xs={3} className={classes.item}>
-                    <TextAreaInput 
-                      module="individual" 
-                      label="individual.json_ext" 
-                      value={individual?.jsonExt} 
-                      onChange={v => this.updateAttribute('jsonExt', v)}
-                      error={!isJsonString(individual?.jsonExt)}
                     />
                   </Grid>
                 </Grid>

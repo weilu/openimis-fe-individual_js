@@ -1,4 +1,7 @@
-import { 
+// Disabled due to consistency with other modules
+/* eslint-disable default-param-last */
+
+import {
   formatServerError,
   formatGraphQLError,
   dispatchMutationReq,
@@ -7,15 +10,15 @@ import {
   parseData,
   pageInfo,
   decodeId,
-} from "@openimis/fe-core";
-import { REQUEST, SUCCESS, ERROR } from "./util/action-type";
+} from '@openimis/fe-core';
+import { REQUEST, SUCCESS, ERROR } from './util/action-type';
 
 export const ACTION_TYPE = {
-  MUTATION: "INDIVIDUAL_MUTATION",
-  SEARCH_INDIVIDUALS: "INDIVIDUAL_INDIVIDUALS",
-  GET_INDIVIDUAL: "INDIVIDUAL_INDIVIDUAL",
-  DELETE_INDIVIDUAL: "INDIVIDUAL_DELETE_INDIVIDUAL",
-  UPDATE_INDIVIDUAL: "INDIVIDUAL_UPDATE_INDIVIDUAL"
+  MUTATION: 'INDIVIDUAL_MUTATION',
+  SEARCH_INDIVIDUALS: 'INDIVIDUAL_INDIVIDUALS',
+  GET_INDIVIDUAL: 'INDIVIDUAL_INDIVIDUAL',
+  DELETE_INDIVIDUAL: 'INDIVIDUAL_DELETE_INDIVIDUAL',
+  UPDATE_INDIVIDUAL: 'INDIVIDUAL_UPDATE_INDIVIDUAL',
 };
 
 function reducer(
@@ -31,7 +34,7 @@ function reducer(
     fetchingIndividual: false,
     errorIndividual: null,
     fetchedIndividual: false,
-    individual: null
+    individual: null,
   },
   action,
 ) {
@@ -64,7 +67,7 @@ function reducer(
           id: decodeId(individual.id),
         })),
         individualsPageInfo: pageInfo(action.payload.data.individual),
-        individualsTotalCount: !!action.payload.data.individual ? action.payload.data.individual.totalCount : null,
+        individualsTotalCount: action.payload.data.individual ? action.payload.data.individual.totalCount : null,
         errorIndividuals: formatGraphQLError(action.payload),
       };
     case SUCCESS(ACTION_TYPE.GET_INDIVIDUAL):
@@ -95,9 +98,9 @@ function reducer(
     case ERROR(ACTION_TYPE.MUTATION):
       return dispatchMutationErr(state, action);
     case SUCCESS(ACTION_TYPE.DELETE_INDIVIDUAL):
-      return dispatchMutationResp(state, "deleteIndividual", action);
+      return dispatchMutationResp(state, 'deleteIndividual', action);
     case SUCCESS(ACTION_TYPE.UPDATE_INDIVIDUAL):
-      return dispatchMutationResp(state, "updateIndividual", action);
+      return dispatchMutationResp(state, 'updateIndividual', action);
     default:
       return state;
   }

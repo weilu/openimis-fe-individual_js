@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useRef } from "react";
-import { injectIntl } from "react-intl";
+import React, { useState, useEffect, useRef } from 'react';
+import { injectIntl } from 'react-intl';
 import {
   withModulesManager,
   formatMessage,
@@ -10,23 +10,23 @@ import {
   journalize,
   withHistory,
   historyPush,
-} from "@openimis/fe-core";
-import { bindActionCreators } from "redux";
-import { connect } from "react-redux";
-import { fetchIndividuals, deleteIndividual } from "../actions";
+} from '@openimis/fe-core';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import { IconButton, Tooltip } from '@material-ui/core';
+import EditIcon from '@material-ui/icons/Edit';
+import DeleteIcon from '@material-ui/icons/Delete';
+import { fetchIndividuals, deleteIndividual } from '../actions';
 import {
   DEFAULT_PAGE_SIZE,
   ROWS_PER_PAGE_OPTIONS,
   EMPTY_STRING,
   RIGHT_INDIVIDUAL_UPDATE,
   RIGHT_INDIVIDUAL_DELETE,
-} from "../constants";
-import IndividualFilter from "./IndividualFilter";
-import { IconButton, Tooltip } from "@material-ui/core";
-import EditIcon from "@material-ui/icons/Edit";
-import DeleteIcon from "@material-ui/icons/Delete";
+} from '../constants';
+import IndividualFilter from './IndividualFilter';
 
-const IndividualSearcher = ({
+function IndividualSearcher({
   intl,
   modulesManager,
   history,
@@ -44,10 +44,28 @@ const IndividualSearcher = ({
   individuals,
   individualsPageInfo,
   individualsTotalCount,
-}) => {
+}) {
   const [individualToDelete, setIndividualToDelete] = useState(null);
   const [deletedIndividualUuids, setDeletedIndividualUuids] = useState([]);
   const prevSubmittingMutationRef = useRef();
+
+  function individualUpdatePageUrl(individual) {
+    return `${modulesManager.getRef('individual.route.individual')}/${individual?.id}`;
+  }
+
+  const openDeleteIndividualConfirmDialog = () => coreConfirm(
+    formatMessageWithValues(intl, 'individual', 'individual.delete.confirm.title', {
+      firstName: individualToDelete.firstName,
+      lastName: individualToDelete.lastName,
+    }),
+    formatMessage(intl, 'individual', 'individual.delete.confirm.message'),
+  );
+
+  const onDoubleClick = (individual, newTab = false) => rights.includes(RIGHT_INDIVIDUAL_UPDATE)
+  && !deletedIndividualUuids.includes(individual.id)
+  && historyPush(modulesManager, history, 'individual.route.individual', [individual?.id], newTab);
+
+  const onDelete = (individual) => setIndividualToDelete(individual);
 
   useEffect(() => individualToDelete && openDeleteIndividualConfirmDialog(), [individualToDelete]);
 
@@ -55,43 +73,38 @@ const IndividualSearcher = ({
     if (individualToDelete && confirmed) {
       deleteIndividual(
         individualToDelete,
-        formatMessageWithValues(intl, "individual", "individual.delete.mutationLabel", {
+        formatMessageWithValues(intl, 'individual', 'individual.delete.mutationLabel', {
           firstName: individualToDelete.firstName,
-          lastName: individualToDelete.lastName
+          lastName: individualToDelete.lastName,
         }),
       );
       setDeletedIndividualUuids([...deletedIndividualUuids, individualToDelete.id]);
     }
-    individualToDelete && confirmed !== null && setIndividualToDelete(null);
+    if (individualToDelete && confirmed !== null) {
+      setIndividualToDelete(null);
+    }
   }, [confirmed]);
 
   useEffect(() => {
-    prevSubmittingMutationRef.current && !submittingMutation && journalize(mutation);
+    if (prevSubmittingMutationRef.current && !submittingMutation) {
+      journalize(mutation);
+    }
   }, [submittingMutation]);
 
   useEffect(() => {
     prevSubmittingMutationRef.current = submittingMutation;
   });
 
-  const openDeleteIndividualConfirmDialog = () =>
-    coreConfirm(
-      formatMessageWithValues(intl, "individual", "individual.delete.confirm.title", {
-        firstName: individualToDelete.firstName,
-        lastName: individualToDelete.lastName
-      }),
-      formatMessage(intl, "individual", "individual.delete.confirm.message"),
-    );
-
   const fetch = (params) => fetchIndividuals(params);
 
   const headers = () => {
     const headers = [
-      "individual.firstName",
-      "individual.lastName",
-      "individual.dob",
+      'individual.firstName',
+      'individual.lastName',
+      'individual.dob',
     ];
     if (rights.includes(RIGHT_INDIVIDUAL_UPDATE)) {
-      headers.push("emptyLabel");
+      headers.push('emptyLabel');
     }
     return headers;
   };
@@ -100,12 +113,11 @@ const IndividualSearcher = ({
     const formatters = [
       (individual) => individual.firstName,
       (individual) => individual.lastName,
-      (individual) =>
-        !!individual.dob ? formatDateFromISO(modulesManager, intl, individual.dob) : EMPTY_STRING,
+      (individual) => (individual.dob ? formatDateFromISO(modulesManager, intl, individual.dob) : EMPTY_STRING),
     ];
     if (rights.includes(RIGHT_INDIVIDUAL_UPDATE)) {
       formatters.push((individual) => (
-        <Tooltip title={formatMessage(intl, "individual", "editButtonTooltip")}>
+        <Tooltip title={formatMessage(intl, 'individual', 'editButtonTooltip')}>
           <IconButton
             href={individualUpdatePageUrl(individual)}
             onClick={(e) => e.stopPropagation() && onDoubleClick(individual)}
@@ -118,7 +130,7 @@ const IndividualSearcher = ({
     }
     if (rights.includes(RIGHT_INDIVIDUAL_DELETE)) {
       formatters.push((individual) => (
-        <Tooltip title={formatMessage(intl, "individual", "deleteButtonTooltip")}>
+        <Tooltip title={formatMessage(intl, 'individual', 'deleteButtonTooltip')}>
           <IconButton
             onClick={() => onDelete(individual)}
             disabled={deletedIndividualUuids.includes(individual.id)}
@@ -134,26 +146,17 @@ const IndividualSearcher = ({
   const rowIdentifier = (individual) => individual.id;
 
   const sorts = () => [
-    ["firstName", true],
-    ["lastName", true],
-    ["dob", true],
+    ['firstName', true],
+    ['lastName', true],
+    ['dob', true],
   ];
-
-  const individualUpdatePageUrl = (individual) => modulesManager.getRef("individual.route.individual") + "/" + individual?.id;
-
-  const onDoubleClick = (individual, newTab = false) =>
-    rights.includes(RIGHT_INDIVIDUAL_UPDATE) &&
-    !deletedIndividualUuids.includes(individual.id) &&
-    historyPush(modulesManager, history, "individual.route.individual", [individual?.id], newTab);
-
-  const onDelete = (individual) => setIndividualToDelete(individual);
 
   const isRowDisabled = (_, individual) => deletedIndividualUuids.includes(individual.id);
 
   const defaultFilters = () => ({
     isDeleted: {
       value: false,
-      filter: "isDeleted: false",
+      filter: 'isDeleted: false',
     },
   });
 
@@ -167,7 +170,7 @@ const IndividualSearcher = ({
       fetchingItems={fetchingIndividuals}
       fetchedItems={fetchedIndividuals}
       errorItems={errorIndividuals}
-      tableTitle={formatMessageWithValues(intl, "individual", "individuals.searcherResultsTitle", {
+      tableTitle={formatMessageWithValues(intl, 'individual', 'individuals.searcherResultsTitle', {
         individualsTotalCount,
       })}
       headers={headers}
@@ -183,7 +186,7 @@ const IndividualSearcher = ({
       rowLocked={isRowDisabled}
     />
   );
-};
+}
 
 const mapStateToProps = (state) => ({
   fetchingIndividuals: state.individual.fetchingIndividuals,
@@ -197,16 +200,15 @@ const mapStateToProps = (state) => ({
   mutation: state.individual.mutation,
 });
 
-const mapDispatchToProps = (dispatch) =>
-  bindActionCreators(
-    {
-      fetchIndividuals,
-      deleteIndividual,
-      coreConfirm,
-      journalize,
-    },
-    dispatch,
-  );
+const mapDispatchToProps = (dispatch) => bindActionCreators(
+  {
+    fetchIndividuals,
+    deleteIndividual,
+    coreConfirm,
+    journalize,
+  },
+  dispatch,
+);
 
 export default withHistory(
   withModulesManager(injectIntl(connect(mapStateToProps, mapDispatchToProps)(IndividualSearcher))),

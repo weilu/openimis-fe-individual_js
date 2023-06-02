@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect } from 'react';
 import {
   Form,
   Helmet,
@@ -7,23 +7,22 @@ import {
   formatMessageWithValues,
   coreConfirm,
   journalize,
-} from "@openimis/fe-core";
-import { injectIntl } from "react-intl";
-import { bindActionCreators } from "redux";
-import { connect } from "react-redux";
-import { withTheme, withStyles } from "@material-ui/core/styles";
-import { RIGHT_INDIVIDUAL_UPDATE } from "../constants";
-import { fetchIndividual, deleteIndividual, updateIndividual } from "../actions";
-import IndividualHeadPanel from "../components/IndividualHeadPanel";
-import DeleteIcon from "@material-ui/icons/Delete";
-import { ACTION_TYPE } from "../reducer";
-import { isJsonString } from "../util/json-validate";
+} from '@openimis/fe-core';
+import { injectIntl } from 'react-intl';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import { withTheme, withStyles } from '@material-ui/core/styles';
+import DeleteIcon from '@material-ui/icons/Delete';
+import { RIGHT_INDIVIDUAL_UPDATE } from '../constants';
+import { fetchIndividual, deleteIndividual, updateIndividual } from '../actions';
+import IndividualHeadPanel from '../components/IndividualHeadPanel';
+import { ACTION_TYPE } from '../reducer';
 
 const styles = (theme) => ({
   page: theme.page,
 });
 
-const IndividualPage = ({
+function IndividualPage({
   intl,
   classes,
   rights,
@@ -38,23 +37,27 @@ const IndividualPage = ({
   submittingMutation,
   mutation,
   journalize,
-}) => {
+}) {
   const [editedIndividual, setEditedIndividual] = useState({});
   const [confirmedAction, setConfirmedAction] = useState(() => null);
   const prevSubmittingMutationRef = useRef();
 
   useEffect(() => {
-    if (!!individualUuid) {
-        fetchIndividual([`id: "${individualUuid}"`]);
+    if (individualUuid) {
+      fetchIndividual([`id: "${individualUuid}"`]);
     }
   }, [individualUuid]);
 
   useEffect(() => confirmed && confirmedAction(), [confirmed]);
 
+  const back = () => history.goBack();
+
   useEffect(() => {
     if (prevSubmittingMutationRef.current && !submittingMutation) {
       journalize(mutation);
-      mutation?.actionType === ACTION_TYPE.DELETE_INDIVIDUAL && back();
+      if (mutation?.actionType === ACTION_TYPE.DELETE_INDIVIDUAL) {
+        back();
+      }
     }
   }, [submittingMutation]);
 
@@ -64,75 +67,73 @@ const IndividualPage = ({
 
   useEffect(() => setEditedIndividual(individual), [individual]);
 
-  const back = () => history.goBack();
-
-  const titleParams = (individual) => ({ 
+  const titleParams = (individual) => ({
     firstName: individual?.firstName,
-    lastName: individual?.lastName
+    lastName: individual?.lastName,
   });
 
   const isMandatoryFieldsEmpty = () => {
-    if (editedIndividual === undefined || editedIndividual === null){ 
-      return false; 
+    if (editedIndividual === undefined || editedIndividual === null) {
+      return false;
     }
     if (
-      !!editedIndividual.firstName &&
-      !!editedIndividual.lastName &&
-      !!editedIndividual.dob
+      !!editedIndividual.firstName
+      && !!editedIndividual.lastName
+      && !!editedIndividual.dob
     ) {
       return false;
     }
     return true;
-  }
+  };
 
   const canSave = () => !isMandatoryFieldsEmpty();
 
   const handleSave = () => {
     updateIndividual(
       editedIndividual,
-      formatMessageWithValues(intl, "individual", "individual.update.mutationLabel", {
+      formatMessageWithValues(intl, 'individual', 'individual.update.mutationLabel', {
         firstName: individual?.firstName,
-        lastName: individual?.lastName
+        lastName: individual?.lastName,
       }),
     );
   };
 
   const deleteIndividualCallback = () => deleteIndividual(
     individual,
-    formatMessageWithValues(intl, "individual", "individual.delete.mutationLabel", {
-        firstName: individual?.firstName,
-        lastName: individual?.lastName
+    formatMessageWithValues(intl, 'individual', 'individual.delete.mutationLabel', {
+      firstName: individual?.firstName,
+      lastName: individual?.lastName,
     }),
   );
 
   const openDeleteIndividualConfirmDialog = () => {
     setConfirmedAction(() => deleteIndividualCallback);
     coreConfirm(
-      formatMessageWithValues(intl, "individual", "individual.delete.confirm.title", {
+      formatMessageWithValues(intl, 'individual', 'individual.delete.confirm.title', {
         firstName: individual?.firstName,
-        lastName: individual?.lastName
+        lastName: individual?.lastName,
       }),
-      formatMessage(intl, "individual", "individual.delete.confirm.message"),
+      formatMessage(intl, 'individual', 'individual.delete.confirm.message'),
     );
   };
 
   const actions = [
     !!individual && {
-        doIt: openDeleteIndividualConfirmDialog,
-        icon: <DeleteIcon />,
-        tooltip: formatMessage(intl, "individual", "deleteButtonTooltip"),
-      },
+      doIt: openDeleteIndividualConfirmDialog,
+      icon: <DeleteIcon />,
+      tooltip: formatMessage(intl, 'individual', 'deleteButtonTooltip'),
+    },
   ];
 
   return (
     rights.includes(RIGHT_INDIVIDUAL_UPDATE) && (
       <div className={classes.page}>
-        <Helmet title={formatMessageWithValues(intl, "individual", "pageTitle", titleParams(individual))} />
+        <Helmet title={formatMessageWithValues(intl, 'individual', 'pageTitle', titleParams(individual))} />
         <Form
           module="individual"
           title="pageTitle"
           titleParams={titleParams(individual)}
-          openDirty={true}
+          openDirty
           individual={editedIndividual}
           edited={editedIndividual}
           onEditedChanged={setEditedIndividual}
@@ -145,12 +146,12 @@ const IndividualPage = ({
           rights={rights}
           actions={actions}
           setConfirmedAction={setConfirmedAction}
-          saveTooltip={formatMessage(intl, "individual", `saveButton.tooltip.${canSave ? 'enabled' : 'disabled'}`)}
+          saveTooltip={formatMessage(intl, 'individual', `saveButton.tooltip.${canSave ? 'enabled' : 'disabled'}`)}
         />
       </div>
     )
   );
-};
+}
 
 const mapStateToProps = (state, props) => ({
   rights: !!state.core && !!state.core.user && !!state.core.user.i_user ? state.core.user.i_user.rights : [],
@@ -160,14 +161,13 @@ const mapStateToProps = (state, props) => ({
   fetchedIndividuals: state.individual.fetchedIndividuals,
   individual: state.individual.individual,
   errorIndividual: state.individual.errorIndividual,
-  confirmed: state.core.confirmed,
   submittingMutation: state.individual.submittingMutation,
   mutation: state.individual.mutation,
 });
 
-const mapDispatchToProps = (dispatch) => {
-  return bindActionCreators({ fetchIndividual, deleteIndividual, updateIndividual, coreConfirm, journalize }, dispatch);
-};
+const mapDispatchToProps = (dispatch) => bindActionCreators({
+  fetchIndividual, deleteIndividual, updateIndividual, coreConfirm, journalize,
+}, dispatch);
 
 export default withHistory(
   injectIntl(withTheme(withStyles(styles)(connect(mapStateToProps, mapDispatchToProps)(IndividualPage)))),

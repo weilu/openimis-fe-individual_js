@@ -1,16 +1,20 @@
-import React from "react";
-import { injectIntl } from "react-intl";
-import { connect } from "react-redux";
-import { Person } from "@material-ui/icons";
-import { formatMessage, MainMenuContribution, withModulesManager } from "@openimis/fe-core";
-import { BENEFICIARY_MAIN_MENU_CONTRIBUTION_KEY } from "../constants";
+// Rules disabled due to core architecture
+/* eslint-disable react/destructuring-assignment */
+/* eslint-disable react/jsx-props-no-spreading */
 
-const BeneficiaryMainMenu = (props) => {
+import React from 'react';
+import { injectIntl } from 'react-intl';
+import { connect } from 'react-redux';
+import { Person } from '@material-ui/icons';
+import { formatMessage, MainMenuContribution, withModulesManager } from '@openimis/fe-core';
+import { BENEFICIARY_MAIN_MENU_CONTRIBUTION_KEY } from '../constants';
+
+function BeneficiaryMainMenu(props) {
   const entries = [
     {
-      text: formatMessage(props.intl, "individual", "menu.individuals"),
+      text: formatMessage(props.intl, 'individual', 'menu.individuals'),
       icon: <Person />,
-      route: "/individuals",
+      route: '/individuals',
     },
   ];
   entries.push(
@@ -20,9 +24,13 @@ const BeneficiaryMainMenu = (props) => {
   );
 
   return (
-    <MainMenuContribution {...props} header={formatMessage(props.intl, "individual", "mainMenuBeneficiary")} entries={entries} />
+    <MainMenuContribution
+      {...props}
+      header={formatMessage(props.intl, 'individual', 'mainMenuBeneficiary')}
+      entries={entries}
+    />
   );
-};
+}
 
 const mapStateToProps = (state) => ({
   rights: !!state.core && !!state.core.user && !!state.core.user.i_user ? state.core.user.i_user.rights : [],

@@ -18,6 +18,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import { RIGHT_INDIVIDUAL_UPDATE } from '../constants';
 import { fetchIndividual, deleteIndividual, updateIndividual } from '../actions';
 import IndividualHeadPanel from '../components/IndividualHeadPanel';
+import IndividualTabPanel from '../components/IndividualTabPanel';
 import { ACTION_TYPE } from '../reducer';
 
 const styles = (theme) => ({
@@ -155,7 +156,7 @@ function IndividualPage({
           canSave={canSave}
           save={handleSave}
           HeadPanel={IndividualHeadPanel}
-          Panels={[]}
+          Panels={[IndividualTabPanel]}
           rights={rights}
           actions={actions}
           setConfirmedAction={setConfirmedAction}

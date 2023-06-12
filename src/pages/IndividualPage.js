@@ -6,11 +6,13 @@ import {
   formatMessage,
   formatMessageWithValues,
   coreConfirm,
+  clearConfirm,
   journalize,
 } from '@openimis/fe-core';
 import { injectIntl } from 'react-intl';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import _ from 'lodash';
 import { withTheme, withStyles } from '@material-ui/core/styles';
 import DeleteIcon from '@material-ui/icons/Delete';
 import { RIGHT_INDIVIDUAL_UPDATE } from '../constants';
@@ -33,6 +35,7 @@ function IndividualPage({
   deleteIndividual,
   updateIndividual,
   coreConfirm,
+  clearConfirm,
   confirmed,
   submittingMutation,
   mutation,
@@ -48,7 +51,10 @@ function IndividualPage({
     }
   }, [individualUuid]);
 
-  useEffect(() => confirmed && confirmedAction(), [confirmed]);
+  useEffect(() => {
+    if (confirmed) confirmedAction();
+    return () => confirmed && clearConfirm(null);
+  }, [confirmed]);
 
   const back = () => history.goBack();
 
@@ -86,7 +92,14 @@ function IndividualPage({
     return true;
   };
 
-  const canSave = () => !isMandatoryFieldsEmpty();
+  const doesIndividualChange = () => {
+    if (_.isEqual(individual, editedIndividual)) {
+      return false;
+    }
+    return true;
+  };
+
+  const canSave = () => !isMandatoryFieldsEmpty() && doesIndividualChange();
 
   const handleSave = () => {
     updateIndividual(
@@ -166,7 +179,12 @@ const mapStateToProps = (state, props) => ({
 });
 
 const mapDispatchToProps = (dispatch) => bindActionCreators({
-  fetchIndividual, deleteIndividual, updateIndividual, coreConfirm, journalize,
+  fetchIndividual,
+  deleteIndividual,
+  updateIndividual,
+  coreConfirm,
+  clearConfirm,
+  journalize,
 }, dispatch);
 
 export default withHistory(

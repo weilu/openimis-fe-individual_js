@@ -7,15 +7,16 @@ import {
   Searcher,
   withHistory,
   historyPush,
-  Dialog,
-  DialogActions,
-  DialogTitle,
   downloadExport,
-  Button,
 } from '@openimis/fe-core';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { IconButton, Tooltip } from '@material-ui/core';
+import {
+  IconButton, Tooltip, Button,
+  Dialog,
+  DialogActions,
+  DialogTitle,
+} from '@material-ui/core';
 import EditIcon from '@material-ui/icons/Edit';
 import { downloadGroups, fetchGroups } from '../actions';
 import {

@@ -4,9 +4,9 @@ import { Contributions } from '@openimis/fe-core';
 import { injectIntl } from 'react-intl';
 import { withTheme, withStyles } from '@material-ui/core/styles';
 import {
-  INDIVIDUAL_BENEFIT_PLANS_LIST_TAB_VALUE,
+  BENEFIT_PLANS_LIST_TAB_VALUE,
   INDIVIDUAL_TABS_LABEL_CONTRIBUTION_KEY,
-  INDIVIDUAL_TABS_PANEL_CONTRIBUTION_KEY,
+  INDIVIDUAL_TABS_PANEL_CONTRIBUTION_KEY, INDIVIDUALS_LIST_TAB_VALUE,
 } from '../constants';
 
 const styles = (theme) => ({
@@ -31,9 +31,9 @@ const styles = (theme) => ({
 });
 
 function IndividualTabPanel({
-  intl, rights, classes, individual, beneficiaryStatus, setConfirmedAction,
+  intl, rights, classes, individual, setConfirmedAction, group,
 }) {
-  const [activeTab, setActiveTab] = useState(INDIVIDUAL_BENEFIT_PLANS_LIST_TAB_VALUE);
+  const [activeTab, setActiveTab] = useState(individual ? BENEFIT_PLANS_LIST_TAB_VALUE : INDIVIDUALS_LIST_TAB_VALUE);
 
   const isSelected = (tab) => tab === activeTab;
 
@@ -52,6 +52,8 @@ function IndividualTabPanel({
           onChange={handleChange}
           isSelected={isSelected}
           tabStyle={tabStyle}
+          group={group}
+          individual={individual}
         />
       </Grid>
       <Contributions
@@ -59,7 +61,7 @@ function IndividualTabPanel({
         rights={rights}
         value={activeTab}
         individual={individual}
-        beneficiaryStatus={beneficiaryStatus}
+        group={group}
         setConfirmedAction={setConfirmedAction}
       />
     </Paper>

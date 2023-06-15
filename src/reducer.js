@@ -16,10 +16,13 @@ import { REQUEST, SUCCESS, ERROR } from './util/action-type';
 export const ACTION_TYPE = {
   MUTATION: 'INDIVIDUAL_MUTATION',
   SEARCH_INDIVIDUALS: 'INDIVIDUAL_INDIVIDUALS',
-  GET_INDIVIDUAL: 'INDIVIDUAL_INDIVIDUAL',
-  DELETE_INDIVIDUAL: 'INDIVIDUAL_DELETE_INDIVIDUAL',
-  UPDATE_INDIVIDUAL: 'INDIVIDUAL_UPDATE_INDIVIDUAL',
   SEARCH_GROUPS: 'GROUP_GROUPS',
+  GET_INDIVIDUAL: 'INDIVIDUAL_INDIVIDUAL',
+  GET_GROUP: 'GROUP_GROUP',
+  DELETE_INDIVIDUAL: 'INDIVIDUAL_DELETE_INDIVIDUAL',
+  DELETE_GROUP: 'GROUP_DELETE_GROUP',
+  UPDATE_INDIVIDUAL: 'INDIVIDUAL_UPDATE_INDIVIDUAL',
+  UPDATE_GROUP: 'GROUP_UPDATE_GROUP',
   GROUP_EXPORT: 'GROUP_EXPORT',
 };
 
@@ -43,6 +46,10 @@ function reducer(
     groups: [],
     groupsPageInfo: {},
     groupsTotalCount: 0,
+    fetchingGroup: false,
+    errorGroup: null,
+    fetchedGroup: false,
+    group: null,
     fetchingGroupBsExport: true,
     fetchedGroupsExport: false,
     groupsExport: null,
@@ -79,6 +86,14 @@ function reducer(
         fetchedIndividual: false,
         individual: null,
         errorIndividual: null,
+      };
+    case REQUEST(ACTION_TYPE.GET_GROUP):
+      return {
+        ...state,
+        fetchingGroup: true,
+        fetchedGroup: false,
+        group: null,
+        errorGroup: null,
       };
     case SUCCESS(ACTION_TYPE.SEARCH_INDIVIDUALS):
       return {
@@ -117,6 +132,17 @@ function reducer(
         }))?.[0],
         errorIndividual: null,
       };
+    case SUCCESS(ACTION_TYPE.GET_GROUP):
+      return {
+        ...state,
+        fetchingGroup: false,
+        fetchedIGroup: true,
+        group: parseData(action.payload.data.group).map((group) => ({
+          ...group,
+          id: decodeId(group.id),
+        }))?.[0],
+        errorGroup: null,
+      };
     case ERROR(ACTION_TYPE.SEARCH_INDIVIDUALS):
       return {
         ...state,
@@ -134,6 +160,12 @@ function reducer(
         ...state,
         fetchingIndividual: false,
         errorIndividual: formatServerError(action.payload),
+      };
+    case ERROR(ACTION_TYPE.GET_GROUP):
+      return {
+        ...state,
+        fetchingGroup: false,
+        errorGroup: formatServerError(action.payload),
       };
     case REQUEST(ACTION_TYPE.GROUP_EXPORT):
       return {
@@ -167,6 +199,10 @@ function reducer(
       return dispatchMutationResp(state, 'deleteIndividual', action);
     case SUCCESS(ACTION_TYPE.UPDATE_INDIVIDUAL):
       return dispatchMutationResp(state, 'updateIndividual', action);
+    case SUCCESS(ACTION_TYPE.DELETE_GROUP):
+      return dispatchMutationResp(state, 'deleteGroup', action);
+    case SUCCESS(ACTION_TYPE.UPDATE_GROUP):
+      return dispatchMutationResp(state, 'updateGroup', action);
     default:
       return state;
   }

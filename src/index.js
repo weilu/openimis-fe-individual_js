@@ -8,31 +8,18 @@ import BeneficiaryMainMenu from './menus/BeneficiaryMainMenu';
 import IndividualsPage from './pages/IndividualsPage';
 import IndividualPage from './pages/IndividualPage';
 import {
-  IndividualBenefitPlansListTabLabel,
-  IndividualBenefitPlansListTabPanel,
-} from './components/IndividualBenefitPlansListTab';
-import {
-  IndividualBenefitPlansActiveTabLabel,
-  IndividualBenefitPlansActiveTabPanel,
-} from './components/IndividualBenefitPlansActiveTab';
-import {
-  IndividualBenefitPlansGraduatedTabLabel,
-  IndividualBenefitPlansGraduatedTabPanel,
-} from './components/IndividualBenefitPlansGraduatedTab';
-import {
-  IndividualBenefitPlansPotentialTabLabel,
-  IndividualBenefitPlansPotentialTabPanel,
-} from './components/IndividualBenefitPlansPotentialTab';
-import {
-  IndividualBenefitPlansSuspendedTabLabel,
-  IndividualBenefitPlansSuspendedTabPanel,
-} from './components/IndividualBenefitPlansSuspendedTab';
+  BenefitPlansListTabLabel,
+  BenefitPlansListTabPanel,
+} from './components/BenefitPlansListTab';
 import GroupsPage from './pages/GroupsPage';
+import GroupPage from './pages/GroupPage';
+import { IndividualsListTabLabel, IndividualsListTabPanel } from './components/IndividualsListTab';
+import IndividualSearcher from './components/IndividualSearcher';
 
 const ROUTE_INDIVIDUALS = 'individuals';
 const ROUTE_INDIVIDUAL = 'individuals/individual';
 const ROUTE_GROUPS = 'groups';
-// const ROUTE_GROUP = 'groups/group';
+const ROUTE_GROUP = 'groups/group';
 
 const DEFAULT_CONFIG = {
   translations: [{ key: 'en', messages: flatten(messages_en) }],
@@ -42,25 +29,20 @@ const DEFAULT_CONFIG = {
     { path: ROUTE_INDIVIDUALS, component: IndividualsPage },
     { path: ROUTE_GROUPS, component: GroupsPage },
     { path: `${ROUTE_INDIVIDUAL}/:individual_uuid?`, component: IndividualPage },
-    // { path: `${ROUTE_GROUP}/:group_uuid?`, component: GroupPage },
+    { path: `${ROUTE_GROUP}/:group_uuid?`, component: GroupPage },
   ],
   refs: [
     { key: 'individual.route.individual', ref: ROUTE_INDIVIDUAL },
-    // { key: 'individual.route.group', ref: ROUTE_GROUP },
+    { key: 'individual.route.group', ref: ROUTE_GROUP },
+    { key: 'individual.IndividualSearcher', ref: IndividualSearcher },
   ],
   'individual.TabPanel.label': [
-    IndividualBenefitPlansListTabLabel,
-    IndividualBenefitPlansActiveTabLabel,
-    IndividualBenefitPlansGraduatedTabLabel,
-    IndividualBenefitPlansPotentialTabLabel,
-    IndividualBenefitPlansSuspendedTabLabel,
+    IndividualsListTabLabel,
+    BenefitPlansListTabLabel,
   ],
   'individual.TabPanel.panel': [
-    IndividualBenefitPlansListTabPanel,
-    IndividualBenefitPlansActiveTabPanel,
-    IndividualBenefitPlansGraduatedTabPanel,
-    IndividualBenefitPlansPotentialTabPanel,
-    IndividualBenefitPlansSuspendedTabPanel,
+    IndividualsListTabPanel,
+    BenefitPlansListTabPanel,
   ],
 };
 

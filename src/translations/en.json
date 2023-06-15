@@ -34,7 +34,7 @@
     "saveButton.tooltip.enabled": "Save changes",
     "saveButton.tooltip.disabled": "Please fill General Information fields first",
     "benefitPlansList": {
-      "label": "LIST"
+      "label": "BENEFIT PLANS"
     },
     "benefitPlansActive": {
       "label": "ACTIVE"
@@ -47,7 +47,11 @@
     },
     "benefitPlansSuspended": {
       "label": "SUSPENDED"
-    }
+    },
+    "individualsList": {
+      "label": "MEMBERS"
+    },
+    "any": "ANY"
   },
   "individuals": {
     "pageTitle": "Individuals",
@@ -60,6 +64,9 @@
   "group": {
     "id": "ID",
     "individual.firstName": "First Name",
-    "individual.lastName": "Last Name"
+    "individual.lastName": "Last Name",
+    "pageTitle": "Group {id}",
+    "headPanelTitle": "General information",
+    "mandatoryFieldsEmptyError": "* These fields are required"
   }
 }

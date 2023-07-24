@@ -156,8 +156,7 @@ function GroupIndividualSearcher({
       updateGroupIndividual(
         editedGroupIndividual,
         formatMessageWithValues(intl, 'individual', 'groupIndividual.update.mutationLabel', {
-          firstName: editedGroupIndividual.individual.firstName,
-          lastName: editedGroupIndividual.individual.lastName,
+          id: editedGroupIndividual?.individual?.id,
         }),
       );
     }

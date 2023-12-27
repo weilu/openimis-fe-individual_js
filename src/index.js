@@ -10,9 +10,14 @@ import IndividualPage from './pages/IndividualPage';
 import GroupsPage from './pages/GroupsPage';
 import GroupPage from './pages/GroupPage';
 import { IndividualsListTabLabel, IndividualsListTabPanel } from './components/IndividualsListTab';
+import {
+  IndividalChangelogTabLabel,
+  IndividalChangelogTabPanel,
+} from './components/IndividualChangelogTab';
 import getBenefitPlansListTab from './contributions/getBenefitPlansListTab';
 import GroupIndividualSearcher from './components/GroupIndividualSearcher';
 import { clearIndividualExport, downloadIndividuals, fetchIndividuals } from './actions';
+import IndividualHistorySearcher from './components/IndividualHistorySearcher';
 
 const ROUTE_INDIVIDUALS = 'individuals';
 const ROUTE_INDIVIDUAL = 'individuals/individual';
@@ -42,12 +47,15 @@ const DEFAULT_CONFIG = {
     { key: 'individual.actions.fetchIndividuals', ref: fetchIndividuals },
     { key: 'individual.actions.downloadIndividuals', ref: downloadIndividuals },
     { key: 'individual.actions.clearIndividualExport', ref: clearIndividualExport },
+    { key: 'individual.IndividualHistorySearcher', ref: IndividualHistorySearcher },
   ],
   'individual.TabPanel.label': [
+    IndividalChangelogTabLabel,
     IndividualsListTabLabel,
     BenefitPlansListTabLabel,
   ],
   'individual.TabPanel.panel': [
+    IndividalChangelogTabPanel,
     IndividualsListTabPanel,
     BenefitPlansListTabPanel,
   ],

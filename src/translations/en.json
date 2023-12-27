@@ -37,11 +37,29 @@
       "label": "MEMBERS"
     },
     "any": "ANY",
-    "ok": "ok"
+    "ok": "ok",
+    "individualChangelog.label": "Change Log"
+  },
+  "individualHistory": {
+    "pageTitle": "Individual {firstName} {lastName}",
+    "headPanelTitle": "General Information",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "dob": "Day of birth",
+    "individualsList": {
+      "label": "MEMBERS"
+    },
+    "any": "ANY",
+    "ok": "ok",
+    "jsonExt": "Additional fields"
   },
   "individuals": {
     "pageTitle": "Individuals",
     "searcherResultsTitle": "{individualsTotalCount} Individuals Found"
+  },
+  "individualHistoryList": {
+    "pageTitle": "Individuals History",
+    "searcherResultsTitle": "{individualHistoryTotalCount} Historical Records Found"
   },
   "groups": {
     "pageTitle": "Groups",

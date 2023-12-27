@@ -61,8 +61,8 @@ export function fetchIndividual(params) {
   return graphql(payload, ACTION_TYPE.GET_INDIVIDUAL);
 }
 
-export function fetchIndividualHistory(individualId) {
-  const payload = formatPageQueryWithCount('individualHistory', [`id: "${individualId}"`], INDIVIDUAL_FULL_PROJECTION);
+export function fetchIndividualHistory(params) {
+  const payload = formatPageQueryWithCount('individualHistory', params, INDIVIDUAL_FULL_PROJECTION);
   return graphql(payload, ACTION_TYPE.SEARCH_INDIVIDUAL_HISTORY);
 }
 

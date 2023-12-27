@@ -15,6 +15,7 @@ import {
   ROWS_PER_PAGE_OPTIONS,
   EMPTY_STRING,
 } from '../constants';
+import IndividualHistoryFilter from './IndividualHistoryFilter';
 
 function IndividualHistorySearcher({
   intl,
@@ -28,7 +29,7 @@ function IndividualHistorySearcher({
   individualHistoryTotalCount,
   individualId,
 }) {
-  const fetch = () => fetchIndividualHistory(individualId);
+  const fetch = (params) => fetchIndividualHistory(params);
 
   const headers = () => {
     const headers = [
@@ -75,10 +76,20 @@ function IndividualHistorySearcher({
     return filters;
   };
 
+  const individualHistoryFilter = (props) => (
+    <IndividualHistoryFilter
+      intl={props.intl}
+      classes={props.classes}
+      filters={props.filters}
+      onChangeFilters={props.onChangeFilters}
+    />
+  );
+
   return (
     <div>
       <Searcher
         module="individual"
+        FilterPane={individualHistoryFilter}
         fetch={fetch}
         items={individualHistory}
         itemsPageInfo={individualHistoryPageInfo}

@@ -19,6 +19,7 @@ const INDIVIDUAL_FULL_PROJECTION = [
   'lastName',
   'dob',
   'jsonExt',
+  'version',
 ];
 
 const GROUP_INDIVIDUAL_FULL_PROJECTION = [

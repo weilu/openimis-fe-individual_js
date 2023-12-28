@@ -50,14 +50,14 @@ const DEFAULT_CONFIG = {
     { key: 'individual.IndividualHistorySearcher', ref: IndividualHistorySearcher },
   ],
   'individual.TabPanel.label': [
-    IndividalChangelogTabLabel,
     IndividualsListTabLabel,
     BenefitPlansListTabLabel,
+    IndividalChangelogTabLabel,
   ],
   'individual.TabPanel.panel': [
-    IndividalChangelogTabPanel,
     IndividualsListTabPanel,
     BenefitPlansListTabPanel,
+    IndividalChangelogTabPanel,
   ],
   'individual.BenefitPlansListTabLabel': [BENEFIT_PLAN_TABS_LABEL_REF_KEY],
   'individual.BenefitPlansListTabPanel': [BENEFIT_PLAN_TABS_PANEL_REF_KEY],

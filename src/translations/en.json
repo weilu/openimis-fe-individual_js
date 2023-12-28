@@ -46,6 +46,8 @@
     "firstName": "First Name",
     "lastName": "Last Name",
     "dob": "Day of birth",
+    "dateUpdated": "Date Updated",
+    "version": "Version",
     "individualsList": {
       "label": "MEMBERS"
     },

@@ -36,6 +36,8 @@ function IndividualHistorySearcher({
       'individualHistory.firstName',
       'individualHistory.lastName',
       'individualHistory.dob',
+      'individualHistory.dateUpdated',
+      'individualHistory.version',
       'individualHistory.jsonExt',
     ];
     return headers;
@@ -45,9 +47,14 @@ function IndividualHistorySearcher({
     const formatters = [
       (individualHistory) => individualHistory.firstName,
       (individualHistory) => individualHistory.lastName,
-      (individualHistory) => (individualHistory.dob ?
-        formatDateFromISO(modulesManager, intl, individualHistory.dob) : EMPTY_STRING
+      (individualHistory) => (individualHistory.dob
+        ? formatDateFromISO(modulesManager, intl, individualHistory.dob) : EMPTY_STRING
       ),
+      (individualHistory) => (individualHistory.dateUpdated
+        ? formatDateFromISO(modulesManager, intl, individualHistory.dateUpdated) : EMPTY_STRING
+      ),
+      (individualHistory) => individualHistory.version,
+      (individualHistory) => individualHistory.jsonExt,
     ];
     return formatters;
   };
@@ -58,6 +65,8 @@ function IndividualHistorySearcher({
     ['firstName', true],
     ['lastName', true],
     ['dob', true],
+    ['dateUpdated', true],
+    ['version', true],
   ];
 
   const defaultFilters = () => {

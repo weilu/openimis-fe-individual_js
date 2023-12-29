@@ -116,7 +116,7 @@ function IndividualHistorySearcher({
         defaultOrderBy="lastName"
         rowIdentifier={rowIdentifier}
         defaultFilters={defaultFilters()}
-        cacheFiltersKey="individualsFilterCache"
+        cacheFiltersKey="individualHistoryFilterChache"
         resetFiltersOnUnmount
       />
     </div>

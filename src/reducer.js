@@ -32,6 +32,7 @@ export const ACTION_TYPE = {
   INDIVIDUAL_EXPORT: 'INDIVIDUAL_EXPORT',
   GROUP_INDIVIDUAL_EXPORT: 'GROUP_INDIVIDUAL_EXPORT',
   SEARCH_INDIVIDUAL_HISTORY: 'SEARCH_INDIVIDUAL_HISTORY',
+  SEARCH_GROUP_HISTORY: 'SEARCH_GROUP_HISTORY',
 };
 
 function reducer(
@@ -85,6 +86,12 @@ function reducer(
     individualHistory: [],
     individualHistoryPageInfo: {},
     individualHistoryTotalCount: 0,
+    fetchingGroupHistory: false,
+    errorGroupHistory: null,
+    fetchedGroupHistory: false,
+    groupHistory: [],
+    groupHistoryPageInfo: {},
+    groupHistoryTotalCount: 0,
   },
   action,
 ) {
@@ -144,6 +151,16 @@ function reducer(
         fetchedGroup: false,
         group: null,
         errorGroup: null,
+      };
+    case REQUEST(ACTION_TYPE.SEARCH_GROUP_HISTORY):
+      return {
+        ...state,
+        fetchingGroupHistory: true,
+        fetchedGroupHistory: false,
+        groupHistory: [],
+        groupHistoryPageInfo: {},
+        groupHistoryTotalCount: 0,
+        errorGroupHistory: null,
       };
     case SUCCESS(ACTION_TYPE.SEARCH_INDIVIDUALS):
       return {
@@ -215,6 +232,20 @@ function reducer(
         groupsTotalCount: action.payload.data.group ? action.payload.data.group.totalCount : null,
         errorGroups: formatGraphQLError(action.payload),
       };
+    case SUCCESS(ACTION_TYPE.SEARCH_GROUP_HISTORY):
+      return {
+        ...state,
+        fetchingGroupHistory: false,
+        fetchedGroupHistory: true,
+        groupHistory: parseData(action.payload.data.groupHistory)?.map((groupHistory) => ({
+          ...groupHistory,
+          id: decodeId(groupHistory.id),
+        })),
+        groupHistoryPageInfo: pageInfo(action.payload.data.groupHistory),
+        groupHistoryTotalCount: action.payload.data.groupHistory
+          ? action.payload.data.groupHistory.totalCount : null,
+        errorGroupHistory: formatGraphQLError(action.payload),
+      };
     case SUCCESS(ACTION_TYPE.GET_INDIVIDUAL):
       return {
         ...state,
@@ -260,6 +291,12 @@ function reducer(
         ...state,
         fetchingGroups: false,
         errorGroups: formatServerError(action.payload),
+      };
+    case ERROR(ACTION_TYPE.SEARCH_GROUP_HISTORY):
+      return {
+        ...state,
+        fetchingGroupHistory: false,
+        errorGroupHistory: formatServerError(action.payload),
       };
     case ERROR(ACTION_TYPE.GET_INDIVIDUAL):
       return {

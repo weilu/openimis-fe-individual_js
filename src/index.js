@@ -62,10 +62,12 @@ const DEFAULT_CONFIG = {
     IndividualsListTabLabel,
     BenefitPlansListTabLabel,
     IndividalChangelogTabLabel,
+    GroupChangelogTabLabel,
   ],
   'individual.TabPanel.panel': [
     IndividualsListTabPanel,
     BenefitPlansListTabPanel,
+    GroupChangelogTabPanel,
     IndividalChangelogTabPanel,
   ],
   'individual.BenefitPlansListTabLabel': [BENEFIT_PLAN_TABS_LABEL_REF_KEY],

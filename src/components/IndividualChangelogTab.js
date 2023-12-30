@@ -4,8 +4,9 @@ import { formatMessage, PublishedComponent } from '@openimis/fe-core';
 import { INDIVIDUAL_CHANGELOG_TAB_VALUE } from '../constants';
 
 function IndividalChangelogTabLabel({
-  intl, onChange, tabStyle, isSelected,
+  intl, onChange, tabStyle, isSelected, individual,
 }) {
+  if (!individual) return null;
   return (
     <Tab
       onChange={onChange}
@@ -20,6 +21,7 @@ function IndividalChangelogTabLabel({
 function IndividalChangelogTabPanel({
   value, individual,
 }) {
+  if (!individual) return null;
   return (
     <PublishedComponent
       pubRef="policyHolder.TabPanel"

@@ -16,6 +16,10 @@ import {
   IndividalChangelogTabLabel,
   IndividalChangelogTabPanel,
 } from './components/IndividualChangelogTab';
+import {
+  IndividalTaskTabLabel,
+  IndividalTaskTabPanel,
+} from './components/IndividualTaskTab';
 import getBenefitPlansListTab from './contributions/getBenefitPlansListTab';
 import GroupIndividualSearcher from './components/GroupIndividualSearcher';
 import { clearIndividualExport, downloadIndividuals, fetchIndividuals } from './actions';
@@ -26,10 +30,12 @@ import {
 } from './components/tasks/IndividualUpdateTasks';
 import GroupHistorySearcher from './components/GroupHistorySearcher';
 import { GroupChangelogTabLabel, GroupChangelogTabPanel } from './components/GroupChangelogTab';
+import { GroupTaskTabLabel, GroupTaskTabPanel } from './components/GroupTaskTab';
 import {
   GroupIndividualUpdateTaskItemFormatters,
   GroupIndividualUpdateTaskTableHeaders,
 } from './components/tasks/GroupIndividualUpdateTasks';
+import { GROUP_LABEL, INDIVIDUAL_LABEL } from './constants';
 
 const ROUTE_INDIVIDUALS = 'individuals';
 const ROUTE_INDIVIDUAL = 'individuals/individual';
@@ -67,12 +73,16 @@ const DEFAULT_CONFIG = {
     BenefitPlansListTabLabel,
     IndividalChangelogTabLabel,
     GroupChangelogTabLabel,
+    GroupTaskTabLabel,
+    IndividalTaskTabLabel,
   ],
   'individual.TabPanel.panel': [
     IndividualsListTabPanel,
     BenefitPlansListTabPanel,
     GroupChangelogTabPanel,
     IndividalChangelogTabPanel,
+    GroupTaskTabPanel,
+    IndividalTaskTabPanel,
   ],
   'individual.BenefitPlansListTabLabel': [BENEFIT_PLAN_TABS_LABEL_REF_KEY],
   'individual.BenefitPlansListTabPanel': [BENEFIT_PLAN_TABS_PANEL_REF_KEY],
@@ -81,12 +91,14 @@ const DEFAULT_CONFIG = {
     tableHeaders: IndividualUpdateTaskTableHeaders,
     itemFormatters: IndividualUpdateTaskItemFormatters,
     taskSource: ['IndividualService'],
+    taskCode: INDIVIDUAL_LABEL,
   },
   {
     text: <FormattedMessage module="individual" id="groupIndividual.tasks.update.title" />,
     tableHeaders: GroupIndividualUpdateTaskTableHeaders,
     itemFormatters: GroupIndividualUpdateTaskItemFormatters,
     taskSource: ['GroupIndividualService'],
+    taskCode: GROUP_LABEL,
   },
   ],
 };

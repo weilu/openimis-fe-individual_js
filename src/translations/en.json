@@ -44,6 +44,7 @@
     "any": "ANY",
     "ok": "ok",
     "individualChangelog.label": "Change Log",
+    "individualTasks.label": "Tasks",
     "groupChange": {
       "confirm": {
         "message": "Individual {individualId} moved to Group {groupId}"
@@ -145,6 +146,7 @@
     "groupIndividualRolePicker": "Role"
   },
   "groupChangelog.label": "Change Log",
+  "groupTasks.label": "Tasks",
   "groupPicker": {
     "label": "Select a group."
   },

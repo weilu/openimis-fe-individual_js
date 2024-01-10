@@ -27,25 +27,29 @@ function GroupTaskTabPanel({
   if (!group) return null;
   const modulesManager = useModulesManager();
   const contributions = modulesManager.getContribs(TASK_CONTRIBUTION_KEY);
-  if (contributions !== undefined) {
-    const filteredContribution = contributions.filter((contribution) => contribution?.taskCode === GROUP_LABEL)[0];
-    return (
-      <PublishedComponent
-        pubRef="policyHolder.TabPanel"
-        module="individual"
-        index={GROUP_TASK_TAB_VALUE}
-        value={value}
-      >
-        <PublishedComponent
-          pubRef="tasksManagement.taskSearcher"
-          entityId={group?.id}
-          rights={rights}
-          classes={classes}
-          contribution={filteredContribution}
-        />
-      </PublishedComponent>
-    );
+  if (contributions === undefined) {
+    return null;
   }
+  const filteredContribution = contributions.find((contribution) => contribution?.taskCode === GROUP_LABEL);
+  if (!filteredContribution) {
+    return null;
+  }
+  return (
+    <PublishedComponent
+      pubRef="policyHolder.TabPanel"
+      module="individual"
+      index={GROUP_TASK_TAB_VALUE}
+      value={value}
+    >
+      <PublishedComponent
+        pubRef="tasksManagement.taskSearcher"
+        entityId={group?.id}
+        rights={rights}
+        classes={classes}
+        contribution={filteredContribution}
+      />
+    </PublishedComponent>
+  );
 }
 
 export { GroupTaskTabLabel, GroupTaskTabPanel };

@@ -27,25 +27,29 @@ function IndividalTaskTabPanel({
   if (!individual) return null;
   const modulesManager = useModulesManager();
   const contributions = modulesManager.getContribs(TASK_CONTRIBUTION_KEY);
-  if (contributions !== undefined) {
-    const filteredContribution = contributions.filter((contribution) => contribution?.taskCode === INDIVIDUAL_LABEL)[0];
-    return (
-      <PublishedComponent
-        pubRef="policyHolder.TabPanel"
-        module="individual"
-        index={INDIVIDUAL_TASK_TAB_VALUE}
-        value={value}
-      >
-        <PublishedComponent
-          pubRef="tasksManagement.taskSearcher"
-          entityId={individual?.id}
-          rights={rights}
-          classes={classes}
-          contribution={filteredContribution}
-        />
-      </PublishedComponent>
-    );
+  if (contributions === undefined) {
+    return null;
   }
+  const filteredContribution = contributions.find((contribution) => contribution?.taskCode === INDIVIDUAL_LABEL);
+  if (!filteredContribution) {
+    return null;
+  }
+  return (
+    <PublishedComponent
+      pubRef="policyHolder.TabPanel"
+      module="individual"
+      index={INDIVIDUAL_TASK_TAB_VALUE}
+      value={value}
+    >
+      <PublishedComponent
+        pubRef="tasksManagement.taskSearcher"
+        entityId={individual?.id}
+        rights={rights}
+        classes={classes}
+        contribution={filteredContribution}
+      />
+    </PublishedComponent>
+  );
 }
 
 export { IndividalTaskTabLabel, IndividalTaskTabPanel };

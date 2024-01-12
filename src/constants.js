@@ -25,12 +25,15 @@ export const RIGHT_SCHEMA_SEARCH = 171001;
 export const BENEFIT_PLANS_LIST_TAB_VALUE = 'BenefitPlansListTab';
 export const INDIVIDUALS_LIST_TAB_VALUE = 'IndividualsListTab';
 export const INDIVIDUAL_CHANGELOG_TAB_VALUE = 'IndividualChangelogTab';
+export const INDIVIDUAL_TASK_TAB_VALUE = 'IndividualTaskTab';
 export const GROUP_CHANGELOG_TAB_VALUE = 'GroupChangelogTab';
+export const GROUP_TASK_TAB_VALUE = 'GroupTaskTab';
 export const INDIVIDUAL_TABS_LABEL_CONTRIBUTION_KEY = 'individual.TabPanel.label';
 export const INDIVIDUAL_TABS_PANEL_CONTRIBUTION_KEY = 'individual.TabPanel.panel';
 
 export const BENEFIT_PLAN_TABS_LABEL_CONTRIBUTION_KEY = 'individual.BenefitPlansListTabLabel';
 export const BENEFIT_PLAN_TABS_PANEL_CONTRIBUTION_KEY = 'individual.BenefitPlansListTabPanel';
+export const TASK_CONTRIBUTION_KEY = 'tasksManagement.tasks';
 
 export const BENEFICIARY_STATUS = {
   POTENTIAL: 'POTENTIAL',
@@ -49,6 +52,8 @@ export const GROUP_INDIVIDUAL_ROLES_LIST = [
 ];
 
 export const BENEFIT_PLAN_LABEL = 'BenefitPlan';
+export const INDIVIDUAL_LABEL = 'Individual';
+export const GROUP_LABEL = 'Group';
 
 export const SOCIAL_PROTECTION_MODULE_NAME = 'social_protection';
 

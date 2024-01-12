@@ -20,6 +20,8 @@ export const RIGHT_GROUP_CREATE = 180002;
 export const RIGHT_GROUP_UPDATE = 180003;
 export const RIGHT_GROUP_DELETE = 180004;
 
+export const RIGHT_SCHEMA_SEARCH = 171001;
+
 export const BENEFIT_PLANS_LIST_TAB_VALUE = 'BenefitPlansListTab';
 export const INDIVIDUALS_LIST_TAB_VALUE = 'IndividualsListTab';
 export const INDIVIDUAL_CHANGELOG_TAB_VALUE = 'IndividualChangelogTab';
@@ -49,3 +51,5 @@ export const GROUP_INDIVIDUAL_ROLES_LIST = [
 export const BENEFIT_PLAN_LABEL = 'BenefitPlan';
 
 export const SOCIAL_PROTECTION_MODULE_NAME = 'social_protection';
+
+export const FETCH_BENEFIT_PLAN_SCHEMA_FIELDS_REF = 'socialProtection.fetchBenefitPlanSchemaFields';

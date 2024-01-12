@@ -15,7 +15,7 @@ import {
   CLEARED_STATE_FILTER,
 } from '@openimis/fe-core';
 import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
+import { connect, useDispatch } from 'react-redux';
 import {
   IconButton, Tooltip, Button,
   Dialog,
@@ -32,7 +32,11 @@ import {
   ROWS_PER_PAGE_OPTIONS,
   EMPTY_STRING,
   RIGHT_INDIVIDUAL_UPDATE,
-  RIGHT_INDIVIDUAL_DELETE, BENEFIT_PLAN_LABEL, SOCIAL_PROTECTION_MODULE_NAME,
+  RIGHT_INDIVIDUAL_DELETE,
+  BENEFIT_PLAN_LABEL,
+  SOCIAL_PROTECTION_MODULE_NAME,
+  RIGHT_SCHEMA_SEARCH,
+  FETCH_BENEFIT_PLAN_SCHEMA_FIELDS_REF,
 } from '../constants';
 import { applyNumberCircle } from '../util/searcher-utils';
 import IndividualFilter from './IndividualFilter';
@@ -61,12 +65,45 @@ function IndividualSearcher({
   downloadIndividuals,
   individualExport,
   errorIndividualExport,
+  fieldsFromBfSchema,
+  fetchingFieldsFromBfSchema,
+  fetchedFieldsFromBfSchema,
 }) {
+  const dispatch = useDispatch();
   const [individualToDelete, setIndividualToDelete] = useState(null);
   const [appliedCustomFilters, setAppliedCustomFilters] = useState([CLEARED_STATE_FILTER]);
   const [appliedFiltersRowStructure, setAppliedFiltersRowStructure] = useState([CLEARED_STATE_FILTER]);
   const [deletedIndividualUuids, setDeletedIndividualUuids] = useState([]);
+  const [exportFields, setExportFields] = useState([
+    'id',
+    'first_name',
+    'last_name',
+    'dob',
+  ]);
+  const exportFieldsColumns = {
+    id: 'ID',
+    first_name: formatMessage(intl, 'individual', 'export.firstName'),
+    last_name: formatMessage(intl, 'individual', 'export.lastName'),
+    dob: formatMessage(intl, 'individual', 'export.dob'),
+  };
   const prevSubmittingMutationRef = useRef();
+
+  useEffect(() => {
+    const canFetchBenefitPlanSchemaFields = !fetchedFieldsFromBfSchema
+        && !fetchingFieldsFromBfSchema
+        && rights.includes(RIGHT_SCHEMA_SEARCH);
+
+    if (canFetchBenefitPlanSchemaFields) {
+      const fetchBenefitPlanSchemaFields = modulesManager.getRef(FETCH_BENEFIT_PLAN_SCHEMA_FIELDS_REF);
+      if (fetchBenefitPlanSchemaFields) {
+        dispatch(fetchBenefitPlanSchemaFields(['bfType: INDIVIDUAL']));
+      }
+    }
+
+    if (!canFetchBenefitPlanSchemaFields) {
+      setExportFields([...exportFields, ...fieldsFromBfSchema]);
+    }
+  }, [fetchedFieldsFromBfSchema, fetchingFieldsFromBfSchema, rights, modulesManager]);
 
   function individualUpdatePageUrl(individual) {
     return `${modulesManager.getRef('individual.route.individual')}/${individual?.id}`;
@@ -241,19 +278,8 @@ function IndividualSearcher({
         appliedFiltersRowStructure={appliedFiltersRowStructure}
         setAppliedFiltersRowStructure={setAppliedFiltersRowStructure}
         applyNumberCircle={applyNumberCircle}
-        exportFields={[
-          'id',
-          'first_name',
-          'last_name',
-          'dob',
-          'json_ext', // Unfolded by backend and removed from csv
-        ]}
-        exportFieldsColumns={{
-          id: 'ID',
-          first_name: formatMessage(intl, 'individual', 'export.firstName'),
-          last_name: formatMessage(intl, 'individual', 'export.lastName'),
-          dob: formatMessage(intl, 'individual', 'export.dob'),
-        }}
+        exportFields={exportFields}
+        exportFieldsColumns={exportFieldsColumns}
         exportFieldLabel={formatMessage(intl, 'individual', 'export.label')}
         chooseExportableColumns
         cacheFiltersKey="individualsFilterCache"
@@ -289,6 +315,10 @@ const mapStateToProps = (state) => ({
   individualExport: state.individual.individualExport,
   individualExportPageInfo: state.individual.individualExportPageInfo,
   errorIndividualExport: state.individual.errorIndividualExport,
+  fieldsFromBfSchema: state?.socialProtection?.fieldsFromBfSchema,
+  fetchingFieldsFromBfSchema: state?.socialProtection?.fetchingFieldsFromBfSchema,
+  fetchedFieldsFromBfSchema: state?.socialProtection?.fetchedFieldsFromBfSchema,
+  errorFieldsFromBfSchema: state?.socialProtection?.errorFieldsFromBfSchema,
 });
 
 const mapDispatchToProps = (dispatch) => bindActionCreators(

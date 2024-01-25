@@ -40,6 +40,7 @@ import {
 } from '../constants';
 import { applyNumberCircle } from '../util/searcher-utils';
 import IndividualFilter from './IndividualFilter';
+import BenefitPlanBeneficiariesUploadDialog from './dialogs/BenefitPlanBeneficiariesUploadDialog';
 
 function IndividualSearcher({
   intl,
@@ -292,6 +293,9 @@ function IndividualSearcher({
             <Button onClick={setFailedExport(false)} variant="contained">
               {formatMessage(intl, 'individual', 'ok')}
             </Button>
+            <BenefitPlanBeneficiariesUploadDialog
+              benefitPlan={null}
+            />
           </DialogActions>
         </Dialog>
       )}

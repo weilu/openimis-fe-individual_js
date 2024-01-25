@@ -65,9 +65,6 @@ function IndividualTabPanel({
         group={group}
         setConfirmedAction={setConfirmedAction}
       />
-      <BenefitPlanBeneficiariesUploadDialog
-        benefitPlan={null}
-      />
     </Paper>
   );
 }

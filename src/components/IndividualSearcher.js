@@ -293,12 +293,12 @@ function IndividualSearcher({
             <Button onClick={setFailedExport(false)} variant="contained">
               {formatMessage(intl, 'individual', 'ok')}
             </Button>
-            <BenefitPlanBeneficiariesUploadDialog
-              benefitPlan={null}
-            />
           </DialogActions>
         </Dialog>
       )}
+      <BenefitPlanBeneficiariesUploadDialog
+        benefitPlan={null}
+      />
     </div>
   );
 }

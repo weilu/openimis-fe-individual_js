@@ -37,10 +37,10 @@ import {
   SOCIAL_PROTECTION_MODULE_NAME,
   RIGHT_SCHEMA_SEARCH,
   FETCH_BENEFIT_PLAN_SCHEMA_FIELDS_REF,
+  INDIVIDUALS_UPLOAD_FORM_CONTRIBUTION_KEY,
 } from '../constants';
 import { applyNumberCircle } from '../util/searcher-utils';
 import IndividualFilter from './IndividualFilter';
-import BenefitPlanBeneficiariesUploadDialog from './dialogs/BenefitPlanBeneficiariesUploadDialog';
 
 function IndividualSearcher({
   intl,
@@ -285,6 +285,7 @@ function IndividualSearcher({
         chooseExportableColumns
         cacheFiltersKey="individualsFilterCache"
         resetFiltersOnUnmount
+        actionsContributionKey={INDIVIDUALS_UPLOAD_FORM_CONTRIBUTION_KEY}
       />
       {failedExport && (
         <Dialog fullWidth maxWidth="sm">
@@ -296,9 +297,6 @@ function IndividualSearcher({
           </DialogActions>
         </Dialog>
       )}
-      <BenefitPlanBeneficiariesUploadDialog
-        benefitPlan={null}
-      />
     </div>
   );
 }

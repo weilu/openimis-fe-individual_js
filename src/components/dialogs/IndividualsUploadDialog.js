@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Input, Grid } from '@material-ui/core';
+import { Input, Grid, MenuItem } from '@material-ui/core';
 import { injectIntl } from 'react-intl';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
@@ -21,12 +21,10 @@ const styles = (theme) => ({
   item: theme.paper.item,
 });
 
-function BenefitPlanBeneficiariesUploadDialog({
+function IndividualsUploadDialog({
   intl,
-  classes,
   workflows,
   fetchWorkflows,
-  benefitPlan,
 }) {
   const [isOpen, setIsOpen] = useState(false);
   const [forms, setForms] = useState({});
@@ -91,18 +89,11 @@ function BenefitPlanBeneficiariesUploadDialog({
 
   return (
     <>
-      <Button
+      <MenuItem
         onClick={handleOpen}
-        variant="outlined"
-        color="#DFEDEF"
-        className={classes.button}
-        style={{
-          border: '0px',
-          marginTop: '6px',
-        }}
       >
-        {formatMessage(intl, 'socialProtection', 'benefitPlan.benefitPlanBeneficiaries.upload')}
-      </Button>
+        {formatMessage(intl, 'individual', 'individual.upload.buttonLabel')}
+      </MenuItem>
       <Dialog
         open={isOpen}
         onClose={handleClose}
@@ -119,7 +110,7 @@ function BenefitPlanBeneficiariesUploadDialog({
               marginTop: '10px',
             }}
           >
-            {formatMessage(intl, 'socialProtection', 'benefitPlan.benefitPlanBeneficiaries.upload.label')}
+            {formatMessage(intl, 'individual', 'individual.upload.label')}
           </DialogTitle>
           <DialogContent>
             <div
@@ -140,7 +131,7 @@ function BenefitPlanBeneficiariesUploadDialog({
                   </Grid>
                   <Grid item>
                     <WorkflowsPicker
-                      module="socialProtection"
+                      module="individual"
                       label="workflowPicker"
                       onChange={(value) => handleFieldChange('workflows', 'workflow', value)}
                       value={() => getFieldValue()}
@@ -171,7 +162,7 @@ function BenefitPlanBeneficiariesUploadDialog({
                     marginBottom: '15px',
                   }}
                 >
-                  Cancel
+                  {formatMessage(intl, 'individual', 'individual.upload.cancel')}
                 </Button>
               </div>
               <div style={{ float: 'right', paddingRight: '16px' }}>
@@ -186,7 +177,7 @@ function BenefitPlanBeneficiariesUploadDialog({
                     )
                   }
                 >
-                  {formatMessage(intl, 'socialProtection', 'benefitPlan.benefitPlanBeneficiaries.upload.label')}
+                  {formatMessage(intl, 'individual', 'individual.upload.label')}
                 </Button>
               </div>
             </div>
@@ -210,7 +201,7 @@ const mapDispatchToProps = (dispatch) => bindActionCreators({
 export default injectIntl(
   withTheme(
     withStyles(styles)(
-      connect(mapStateToProps, mapDispatchToProps)(BenefitPlanBeneficiariesUploadDialog),
+      connect(mapStateToProps, mapDispatchToProps)(IndividualsUploadDialog),
     ),
   ),
 );

@@ -36,6 +36,7 @@ import {
   GroupIndividualUpdateTaskTableHeaders,
 } from './components/tasks/GroupIndividualUpdateTasks';
 import { GROUP_LABEL, INDIVIDUAL_LABEL } from './constants';
+import IndividualsUploadDialog from './components/dialogs/IndividualsUploadDialog';
 
 const ROUTE_INDIVIDUALS = 'individuals';
 const ROUTE_INDIVIDUAL = 'individuals/individual';
@@ -67,7 +68,9 @@ const DEFAULT_CONFIG = {
     { key: 'individual.actions.clearIndividualExport', ref: clearIndividualExport },
     { key: 'individual.IndividualHistorySearcher', ref: IndividualHistorySearcher },
     { key: 'individual.GroupHistorySearcher', ref: GroupHistorySearcher },
+    { key: 'individual.IndividualsUploadDialog', ref: IndividualsUploadDialog },
   ],
+  'individual.IndividualsUploadDialog': IndividualsUploadDialog,
   'individual.TabPanel.label': [
     IndividualsListTabLabel,
     BenefitPlansListTabLabel,

@@ -8,7 +8,6 @@ import {
   INDIVIDUAL_TABS_LABEL_CONTRIBUTION_KEY,
   INDIVIDUAL_TABS_PANEL_CONTRIBUTION_KEY, INDIVIDUALS_LIST_TAB_VALUE,
 } from '../constants';
-import BenefitPlanBeneficiariesUploadDialog from './dialogs/BenefitPlanBeneficiariesUploadDialog';
 
 const styles = (theme) => ({
   paper: theme.paper.paper,

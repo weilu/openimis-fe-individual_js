@@ -58,3 +58,4 @@ export const GROUP_LABEL = 'Group';
 export const SOCIAL_PROTECTION_MODULE_NAME = 'social_protection';
 
 export const FETCH_BENEFIT_PLAN_SCHEMA_FIELDS_REF = 'socialProtection.fetchBenefitPlanSchemaFields';
+export const INDIVIDUALS_UPLOAD_FORM_CONTRIBUTION_KEY = 'individual.IndividualsUploadDialog';

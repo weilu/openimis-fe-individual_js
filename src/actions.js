@@ -1,6 +1,7 @@
 import {
   graphql,
   formatPageQuery,
+  formatQuery,
   formatPageQueryWithCount,
   formatMutation,
   formatGQLString,
@@ -9,6 +10,20 @@ import { ACTION_TYPE } from './reducer';
 import {
   CLEAR, ERROR, REQUEST, SET, SUCCESS,
 } from './util/action-type';
+
+const WORKFLOWS_FULL_PROJECTION = () => [
+  'name',
+  'group',
+];
+
+export function fetchWorkflows() {
+  const payload = formatQuery(
+    'workflow',
+    [],
+    WORKFLOWS_FULL_PROJECTION(),
+  );
+  return graphql(payload, ACTION_TYPE.GET_WORKFLOWS);
+}
 
 const INDIVIDUAL_FULL_PROJECTION = [
   'id',

@@ -31,6 +31,17 @@
       "label": "Update Individual",
       "mutationLabel":"Update Individual {id}"
     },
+    "upload": {
+      "buttonLabel": "UPLOAD",
+      "label": "Upload Individuals",
+      "workflowPicker": "Workflow",
+      "cancel": "Cancel"
+    },
+    "enrollment": {
+      "buttonLabel": "ENROLLMENT",
+      "label": "Enroll Individuals to the program",
+      "cancel": "Cancel"
+    },
     "saveButton.tooltip.enabled": "Save changes",
     "saveButton.tooltip.disabled": "Please fill General Information fields first",
     "individualsList": {

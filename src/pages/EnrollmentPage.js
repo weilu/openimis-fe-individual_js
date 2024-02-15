@@ -1,25 +1,71 @@
-/* eslint-disable max-len */
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+
+import { makeStyles } from '@material-ui/styles';
+
 import {
+  Form,
+  useHistory,
   useModulesManager,
   useTranslations,
+  coreConfirm,
+  clearConfirm,
+  journalize,
+  decodeId,
 } from '@openimis/fe-core';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
+import EnrollmentHeadPanel from '../components/EnrollmentHeadPanel';
 
-function EnrollmentPage() {
+const useStyles = makeStyles((theme) => ({
+  page: theme.page,
+}));
+
+function EnrollmentPage({
+  rights,
+}) {
+  const modulesManager = useModulesManager();
+  const classes = useStyles();
+  const history = useHistory();
+  const { formatMessage, formatMessageWithValues } = useTranslations('individual', modulesManager);
+
+  const [editedEnrollment, setEditedEnrollment] = useState({});
+
+  const back = () => history.goBack();
+
+  const actions = [];
+
   return (
-    <>
-    </>
+    <div className={classes.page}>
+      <Form
+        key=""
+        module="payroll"
+        title="Enrollment of Individuals to the Programme"
+        titleParams="Enrollment"
+        edited={editedEnrollment}
+        onEditedChanged={setEditedEnrollment}
+        back={back}
+        mandatoryFieldsEmpty={null}
+        canSave={() => {}}
+        save={() => {}}
+        HeadPanel={EnrollmentHeadPanel}
+        rights={rights}
+        actions={actions}
+      />
+    </div>
   );
 }
 
-const mapStateToProps = (state) => ({
-  rights: !!state.core && !!state.core.user && !!state.core.user.i_user ? state.core.user.i_user.rights : [],
-  confirmed: state.core.confirmed,
-});
-
 const mapDispatchToProps = (dispatch) => bindActionCreators({
+  coreConfirm,
+  clearConfirm,
+  journalize,
 }, dispatch);
+
+const mapStateToProps = (state, props) => ({
+  statePayrollUuid: props?.match?.params.payroll_uuid,
+  rights: state.core?.user?.i_user?.rights ?? [],
+  confirmed: state.core.confirmed,
+  submittingMutation: state.payroll.submittingMutation,
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(EnrollmentPage);

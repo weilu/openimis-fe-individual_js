@@ -38,14 +38,14 @@ import {
 } from './components/tasks/GroupIndividualUpdateTasks';
 import { GROUP_LABEL, INDIVIDUAL_LABEL } from './constants';
 import { GroupCreateTaskItemFormatters, GroupCreateTaskTableHeaders } from './components/tasks/GroupCreateTasks';
-import IndividualEnrollmentDialog from './components/dialogs/IndividualEnrollmentDialog';
+import IndividualsUploadDialog from './components/dialogs/IndividualsUploadDialog';
 
 const ROUTE_INDIVIDUALS = 'individuals';
 const ROUTE_INDIVIDUAL = 'individuals/individual';
 const ROUTE_INDIVIDUAL_FROM_GROUP = 'groups/group/individuals/individual';
 const ROUTE_GROUPS = 'groups';
 const ROUTE_GROUP = 'groups/group';
-const ROUTE_ENROLLMENT = 'enrollment';
+const ROUTE_ENROLLMENT = 'individuals/enrollment';
 
 const BENEFIT_PLAN_TABS_LABEL_REF_KEY = 'socialProtection.BenefitPlansListTabLabel';
 const BENEFIT_PLAN_TABS_PANEL_REF_KEY = 'socialProtection.BenefitPlansListTabPanel';
@@ -58,13 +58,14 @@ const DEFAULT_CONFIG = {
   'core.Router': [
     { path: ROUTE_INDIVIDUALS, component: IndividualsPage },
     { path: ROUTE_GROUPS, component: GroupsPage },
-    { path: `${ROUTE_INDIVIDUAL}/${ROUTE_ENROLLMENT}?`, component: EnrollmentPage },
+    { path: ROUTE_ENROLLMENT, component: EnrollmentPage },
     { path: `${ROUTE_INDIVIDUAL}/:individual_uuid?`, component: IndividualPage },
     { path: `${ROUTE_INDIVIDUAL_FROM_GROUP}/:individual_uuid?`, component: IndividualPage },
     { path: `${ROUTE_GROUP}/:group_uuid?`, component: GroupPage },
   ],
   refs: [
     { key: 'individual.route.individual', ref: ROUTE_INDIVIDUAL },
+    { key: 'individual.route.enrollment', ref: ROUTE_ENROLLMENT },
     { key: 'individual.route.group', ref: ROUTE_GROUP },
     { key: 'individual.GroupIndividualSearcher', ref: GroupIndividualSearcher },
     { key: 'individual.actions.fetchIndividuals', ref: fetchIndividuals },
@@ -72,9 +73,9 @@ const DEFAULT_CONFIG = {
     { key: 'individual.actions.clearIndividualExport', ref: clearIndividualExport },
     { key: 'individual.IndividualHistorySearcher', ref: IndividualHistorySearcher },
     { key: 'individual.GroupHistorySearcher', ref: GroupHistorySearcher },
-    { key: 'individual.IndividualsEnrolmentDialog', ref: IndividualEnrollmentDialog },
+    { key: 'individual.IndividualsUploadDialog', ref: IndividualsUploadDialog },
   ],
-  'individual.IndividualsEnrolmentDialog': IndividualEnrollmentDialog,
+  'individual.IndividualsUploadDialog': IndividualsUploadDialog,
   'individual.TabPanel.label': [
     IndividualsListTabLabel,
     BenefitPlansListTabLabel,

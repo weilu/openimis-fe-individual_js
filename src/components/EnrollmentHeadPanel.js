@@ -70,7 +70,6 @@ class EnrollmentHeadPanel extends FormPanel {
     const { edited, classes, intl } = this.props;
     const enrollment = { ...edited };
     const { appliedCustomFilters, appliedFiltersRowStructure } = this.state;
-    console.log(enrollment);
     return (
       <>
         <AdvancedCriteriaDialog
@@ -95,6 +94,15 @@ class EnrollmentHeadPanel extends FormPanel {
               filterLabels={false}
               onChange={(benefitPlan) => this.updateAttribute('benefitPlan', benefitPlan)}
               value={enrollment?.benefitPlan}
+            />
+          </Grid>
+          <Grid item xs={3} className={classes.item}>
+            <PublishedComponent
+              pubRef="socialProtection.BeneficiaryStatusPicker"
+              required
+              filterLabels={false}
+              onChange={(status) => this.updateAttribute('status', status)}
+              value={enrollment?.status}
             />
           </Grid>
         </Grid>

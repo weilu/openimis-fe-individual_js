@@ -12,7 +12,6 @@ import {
   coreConfirm,
   clearConfirm,
   journalize,
-  decodeId,
 } from '@openimis/fe-core';
 import EnrollmentHeadPanel from '../components/EnrollmentHeadPanel';
 

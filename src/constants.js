@@ -58,3 +58,4 @@ export const GROUP_LABEL = 'Group';
 export const INDIVIDUAL_MODULE_NAME = 'individual';
 
 export const FETCH_BENEFIT_PLAN_SCHEMA_FIELDS_REF = 'socialProtection.fetchBenefitPlanSchemaFields';
+export const INDIVIDUAL_ENROLMENT_DIALOG_CONTRIBUTION_KEY = 'individual.IndividualsEnrolmentDialog';

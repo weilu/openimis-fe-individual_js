@@ -21,7 +21,7 @@ const styles = (theme) => ({
   item: theme.paper.item,
 });
 
-function AdvancedCriteriaDialog({
+function AdvancedCriteriaForm({
   intl,
   classes,
   object,
@@ -112,7 +112,10 @@ function AdvancedCriteriaDialog({
 
     // Extract custom_filter_condition values and construct customFilters array
     const customFilters = advancedCriteria.map((criterion) => `"${criterion.custom_filter_condition}"`);
-    const params = [`customFilters: [${customFilters}]`];
+    const params = [
+      `customFilters: [${customFilters}]`,
+      `benefitPlanId: "${decodeId(object.id)}"`,
+    ];
     fetchIndividualEnrollmentSummary(params);
     handleClose();
   };
@@ -198,6 +201,7 @@ function AdvancedCriteriaDialog({
             variant="contained"
             color="primary"
             autoFocus
+            disabled={!object}
           >
             {formatMessage(intl, 'paymentPlan', 'paymentPlan.advancedCriteria.button.filter')}
           </Button>
@@ -246,6 +250,16 @@ function AdvancedCriteriaDialog({
               </Typography>
             </Paper>
           </Grid>
+          <Grid item xs={4}>
+            <Paper elevation={3} style={{ padding: '20px' }}>
+              <Typography variant="h6" gutterBottom>
+                {formatMessage(intl, 'individual', 'individual.enrollment.numberOfIndividualsAssignedToSelectedProgramme')}
+              </Typography>
+              <Typography variant="body1">
+                {enrollmentSummary.numberOfIndividualsAssignedToSelectedProgramme}
+              </Typography>
+            </Paper>
+          </Grid>
         </Grid>
       </div>
       )}
@@ -271,4 +285,4 @@ const mapDispatchToProps = (dispatch) => bindActionCreators({
   fetchIndividualEnrollmentSummary,
 }, dispatch);
 
-export default injectIntl(withTheme(withStyles(styles)(connect(mapStateToProps, mapDispatchToProps)(AdvancedCriteriaDialog))));
+export default injectIntl(withTheme(withStyles(styles)(connect(mapStateToProps, mapDispatchToProps)(AdvancedCriteriaForm))));

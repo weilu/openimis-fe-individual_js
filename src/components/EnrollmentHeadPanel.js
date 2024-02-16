@@ -12,7 +12,7 @@ import {
   PublishedComponent,
   withModulesManager,
 } from '@openimis/fe-core';
-import AdvancedCriteriaDialog from './dialogs/AdvancedCriteriaDialog';
+import AdvancedCriteriaForm from './dialogs/AdvancedCriteriaForm';
 import { CLEARED_STATE_FILTER } from '../constants';
 
 const styles = (theme) => ({
@@ -102,7 +102,7 @@ class EnrollmentHeadPanel extends FormPanel {
             </div>
             <Divider />
             <Grid container className={classes.item}>
-              <AdvancedCriteriaDialog
+              <AdvancedCriteriaForm
                 object={enrollment.benefitPlan}
                 objectToSave={enrollment}
                 moduleName="individual"

@@ -44,7 +44,8 @@
       "numberOfSelectedIndividuals": "Number Of Selected Individuals",
       "totalNumberOfIndividuals": "Total Number of Individuals",
       "numberOfIndividualsAssignedToProgramme": "Number of Individuals Assigned To Programme",
-      "numberOfIndividualsNotAssignedToProgramme": "Number of Individuals not Assigned to Programme"
+      "numberOfIndividualsNotAssignedToProgramme": "Number of Individuals not Assigned to Programme",
+      "numberOfIndividualsAssignedToSelectedProgramme": "Number Of Individuals Assigned to Selected Programme"
     },
     "saveButton.tooltip.enabled": "Save changes",
     "saveButton.tooltip.disabled": "Please fill General Information fields first",

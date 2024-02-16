@@ -33,6 +33,7 @@ function AdvancedCriteriaRowValue({
   index,
   filters,
   setFilters,
+  readOnly,
 }) {
   const onAttributeChange = (attribute) => (value) => {
     let updatedFilter = { ...currentFilter };
@@ -80,6 +81,7 @@ function AdvancedCriteriaRowValue({
         return (
           <SelectInput
             options={BOOL_OPTIONS}
+            readOnly={readOnly}
             {...commonProps}
           />
         );
@@ -88,6 +90,7 @@ function AdvancedCriteriaRowValue({
           <NumberInput
             min={0}
             displayZero
+            readOnly={readOnly}
             {...commonProps}
           />
         );
@@ -97,12 +100,14 @@ function AdvancedCriteriaRowValue({
           return (
             <PublishedComponent
               pubRef="core.DatePicker"
+              readOnly={readOnly}
               {...commonProps}
             />
           );
         }
         return (
           <TextInput
+            readOnly={readOnly}
             {...commonProps}
           />
         );
@@ -116,7 +121,7 @@ function AdvancedCriteriaRowValue({
       className={classes.item}
       style={{ backgroundColor: '#DFEDEF' }}
     >
-      {filters.length > 0 ? (
+      {filters.length > 0 && !readOnly ? (
         <div style={{
           backgroundColor: '#DFEDEF', width: '10px', height: '25px', marginTop: '25px',
         }}
@@ -140,6 +145,7 @@ function AdvancedCriteriaRowValue({
           value={{ field: currentFilter.field, type: currentFilter.type }}
           onChange={onAttributeChange('field')}
           customFilters={customFilters}
+          readOnly={readOnly}
         />
       </Grid>
       {currentFilter.field !== '' ? (
@@ -151,6 +157,7 @@ function AdvancedCriteriaRowValue({
             onChange={onAttributeChange('filter')}
             customFilters={customFilters}
             customFilterField={currentFilter.field}
+            readOnly={readOnly}
           />
         </Grid>
       ) : (<></>) }

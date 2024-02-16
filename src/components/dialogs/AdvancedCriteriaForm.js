@@ -6,6 +6,9 @@ import {
   decodeId,
   formatMessage,
   fetchCustomFilter,
+  coreConfirm,
+  clearConfirm,
+  historyPush,
 } from '@openimis/fe-core';
 import { withTheme, withStyles } from '@material-ui/core/styles';
 import { connect } from 'react-redux';
@@ -15,7 +18,7 @@ import Typography from '@material-ui/core/Typography';
 import AdvancedCriteriaRowValue from './AdvancedCriteriaRowValue';
 import { CLEARED_STATE_FILTER, INDIVIDUAL } from '../../constants';
 import { isBase64Encoded, isEmptyObject } from '../../utils';
-import { fetchIndividualEnrollmentSummary } from '../../actions';
+import { confirmEnrollment, fetchIndividualEnrollmentSummary } from '../../actions';
 
 const styles = (theme) => ({
   item: theme.paper.item,
@@ -41,6 +44,10 @@ function AdvancedCriteriaForm({
   errorEnrollmentSummary,
   fetchingEnrollmentSummary,
   fetchedEnrollmentSummary,
+  confirmEnrollment,
+  confirmed,
+  clearConfirm,
+  coreConfirm,
 }) {
   const [isOpen, setIsOpen] = useState(false);
   const [currentFilter, setCurrentFilter] = useState({
@@ -143,6 +150,41 @@ function AdvancedCriteriaForm({
 
   useEffect(() => {}, [filters]);
 
+  const openConfirmEnrollmentDialog = () => {
+    coreConfirm(
+      'Confirm',
+      formatMessage(intl, 'individual', 'individul.enrollment.confirmMessageDialog'),
+    );
+  };
+
+  useEffect(() => {
+    if (confirmed) {
+      const outputFilters = JSON.stringify(
+        filters.map(({
+          filter, value, field, type,
+        }) => ({
+          custom_filter_condition: `${field}__${filter}__${type}=${value}`,
+        })),
+      );
+      const jsonExt = updateJsonExt(objectToSave.jsonExt, outputFilters);
+      const jsonData = JSON.parse(jsonExt);
+      const advancedCriteria = jsonData.advanced_criteria || [];
+
+      // Extract custom_filter_condition values and construct customFilters array
+      const customFilters = advancedCriteria.map((criterion) => `"${criterion.custom_filter_condition}"`);
+      const params = {
+        customFilters: `[${customFilters}]`,
+        benefitPlanId: `"${decodeId(object.id)}"`,
+        status: '"ACTIVE"',
+      };
+      confirmEnrollment(
+        params,
+        'Confirmed enrollment',
+      );
+    }
+    return () => confirmed && clearConfirm(false);
+  }, [confirmed]);
+
   return (
     <>
       {filters.map((filter, index) => (
@@ -153,32 +195,38 @@ function AdvancedCriteriaForm({
           index={index}
           filters={filters}
           setFilters={setFilters}
+          readOnly={confirmed}
         />
       ))}
-      <div
-        style={{ backgroundColor: '#DFEDEF', paddingLeft: '10px', paddingBottom: '10px' }}
-      >
-        <AddCircle
-          style={{
-            border: 'thin solid',
-            borderRadius: '40px',
-            width: '16px',
-            height: '16px',
-          }}
-          onClick={handleAddFilter}
-        />
-        <Button
-          onClick={handleAddFilter}
-          variant="outlined"
-          style={{
-            border: '0px',
-            marginBottom: '6px',
-            fontSize: '0.8rem',
-          }}
+      { !confirmed ? (
+        <div
+          style={{ backgroundColor: '#DFEDEF', paddingLeft: '10px', paddingBottom: '10px' }}
         >
-          {formatMessage(intl, 'individual', 'individual.enrollment.addFilters')}
-        </Button>
-      </div>
+          <AddCircle
+            style={{
+              border: 'thin solid',
+              borderRadius: '40px',
+              width: '16px',
+              height: '16px',
+            }}
+            onClick={handleAddFilter}
+            disabled={confirmed}
+          />
+          <Button
+            onClick={handleAddFilter}
+            variant="outlined"
+            style={{
+              border: '0px',
+              marginBottom: '6px',
+              fontSize: '0.8rem',
+            }}
+            disabled={confirmed}
+          >
+            {formatMessage(intl, 'individual', 'individual.enrollment.addFilters')}
+          </Button>
+        </div>
+      // eslint-disable-next-line react/jsx-no-useless-fragment
+      ) : (<></>) }
       <div>
         <div style={{ float: 'left' }}>
           <Button
@@ -187,6 +235,7 @@ function AdvancedCriteriaForm({
             style={{
               border: '0px',
             }}
+            disabled={confirmed}
           >
             {formatMessage(intl, 'individual', 'individual.enrollment.clearAllFilters')}
           </Button>
@@ -201,7 +250,7 @@ function AdvancedCriteriaForm({
             variant="contained"
             color="primary"
             autoFocus
-            disabled={!object}
+            disabled={!object || confirmed}
           >
             {formatMessage(intl, 'individual', 'individual.enrollment.previewEnrollment')}
           </Button>
@@ -270,11 +319,11 @@ function AdvancedCriteriaForm({
           <Grid item xs={5} />
           <Grid item xs={5}>
             <Button
-              onClick={() => {}}
+              onClick={() => openConfirmEnrollmentDialog()}
               variant="contained"
               color="primary"
               autoFocus
-              disabled={!object}
+              disabled={!object || confirmed}
             >
               {formatMessage(intl, 'individual', 'individual.enrollment.confirmEnrollment')}
             </Button>
@@ -303,6 +352,9 @@ const mapStateToProps = (state, props) => ({
 const mapDispatchToProps = (dispatch) => bindActionCreators({
   fetchCustomFilter,
   fetchIndividualEnrollmentSummary,
+  confirmEnrollment,
+  clearConfirm,
+  coreConfirm,
 }, dispatch);
 
 export default injectIntl(withTheme(withStyles(styles)(connect(mapStateToProps, mapDispatchToProps)(AdvancedCriteriaForm))));

@@ -36,6 +36,7 @@ export const ACTION_TYPE = {
   SEARCH_GROUP_HISTORY: 'SEARCH_GROUP_HISTORY',
   SET_GROUP_INDIVIDUAL: 'SET_GROUP_INDIVIDUAL',
   GET_WORKFLOWS: 'GET_WORKFLOWS',
+  ENROLLMENT_SUMMARY: 'ENROLLMENT_SUMMARY',
 };
 
 function reducer(
@@ -101,6 +102,10 @@ function reducer(
     workflowsPageInfo: {},
     workflowsGroupBeneficiaries: null,
     errorWorkflows: null,
+    enrollmentSummary: [],
+    enrollmentSummaryError: null,
+    fetchingEnrollmentSummary: true,
+    fetchedEnrollmentSummary: false,
   },
   action,
 ) {
@@ -469,6 +474,28 @@ function reducer(
         ...state,
         fetchingWorkflows: false,
         errorWorkflows: formatServerError(action.payload),
+      };
+    case REQUEST(ACTION_TYPE.ENROLLMENT_SUMMARY):
+      return {
+        ...state,
+        fetchingEnrollmentSummary: true,
+        fetchedEnrollmentSummary: false,
+        enrollmentSummary: {},
+        enrollmentSummaryError: null,
+      };
+    case SUCCESS(ACTION_TYPE.ENROLLMENT_SUMMARY):
+      return {
+        ...state,
+        fetchingEnrollmentSummary: false,
+        fetchedEnrollmentSummary: true,
+        enrollmentSummary: action.payload.data.individualEnrollmentSummary,
+        enrollmentSummaryError: formatGraphQLError(action.payload),
+      };
+    case ERROR(ACTION_TYPE.ENROLLMENT_SUMMARY):
+      return {
+        ...state,
+        fetchingEnrollmentSummary: false,
+        enrollmentSummaryError: formatServerError(action.payload),
       };
     case REQUEST(ACTION_TYPE.MUTATION):
       return dispatchMutationReq(state, action);

@@ -1,8 +1,9 @@
+/* eslint-disable max-len */
 /* eslint-disable camelcase */
-import React from 'react';
+import React, { Fragment } from 'react';
 import { injectIntl } from 'react-intl';
 
-import { Grid } from '@material-ui/core';
+import { Grid, Divider } from '@material-ui/core';
 import { withStyles, withTheme } from '@material-ui/core/styles';
 
 import {
@@ -72,19 +73,6 @@ class EnrollmentHeadPanel extends FormPanel {
     const { appliedCustomFilters, appliedFiltersRowStructure } = this.state;
     return (
       <>
-        <AdvancedCriteriaDialog
-          object={enrollment.benefitPlan}
-          objectToSave={enrollment}
-          moduleName="individual"
-          objectType="Individual"
-          setAppliedCustomFilters={this.setAppliedCustomFilters}
-          appliedCustomFilters={appliedCustomFilters}
-          appliedFiltersRowStructure={appliedFiltersRowStructure}
-          setAppliedFiltersRowStructure={this.setAppliedFiltersRowStructure}
-          updateAttributes={this.updateJsonExt}
-          getDefaultAppliedCustomFilters={this.getDefaultAppliedCustomFilters}
-          additionalParams={enrollment?.benefitPlan ? { benefitPlan: `${decodeId(enrollment.benefitPlan.id)}` } : null}
-        />
         <Grid container className={classes.item}>
           <Grid item xs={3} className={classes.item}>
             <PublishedComponent
@@ -105,6 +93,30 @@ class EnrollmentHeadPanel extends FormPanel {
               value={enrollment?.status}
             />
           </Grid>
+        </Grid>
+        <Divider />
+        <Grid>
+          <>
+            <div className={classes.item}>
+              Criteria
+            </div>
+            <Divider />
+            <Grid container className={classes.item}>
+              <AdvancedCriteriaDialog
+                object={enrollment.benefitPlan}
+                objectToSave={enrollment}
+                moduleName="individual"
+                objectType="Individual"
+                setAppliedCustomFilters={this.setAppliedCustomFilters}
+                appliedCustomFilters={appliedCustomFilters}
+                appliedFiltersRowStructure={appliedFiltersRowStructure}
+                setAppliedFiltersRowStructure={this.setAppliedFiltersRowStructure}
+                updateAttributes={this.updateJsonExt}
+                getDefaultAppliedCustomFilters={this.getDefaultAppliedCustomFilters}
+                additionalParams={enrollment?.benefitPlan ? { benefitPlan: `${decodeId(enrollment.benefitPlan.id)}` } : null}
+              />
+            </Grid>
+          </>
         </Grid>
       </>
     );

@@ -1,10 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { injectIntl } from 'react-intl';
 import Button from '@material-ui/core/Button';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogTitle from '@material-ui/core/DialogTitle';
+import { Grid, Paper } from '@material-ui/core';
 import {
   decodeId,
   formatMessage,
@@ -14,9 +11,11 @@ import { withTheme, withStyles } from '@material-ui/core/styles';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import AddCircle from '@material-ui/icons/Add';
+import Typography from '@material-ui/core/Typography';
 import AdvancedCriteriaRowValue from './AdvancedCriteriaRowValue';
 import { CLEARED_STATE_FILTER, INDIVIDUAL } from '../../constants';
 import { isBase64Encoded, isEmptyObject } from '../../utils';
+import { fetchIndividualEnrollmentSummary } from '../../actions';
 
 const styles = (theme) => ({
   item: theme.paper.item,
@@ -37,6 +36,11 @@ function AdvancedCriteriaDialog({
   updateAttributes,
   getDefaultAppliedCustomFilters,
   additionalParams,
+  fetchIndividualEnrollmentSummary,
+  enrollmentSummary,
+  errorEnrollmentSummary,
+  fetchingEnrollmentSummary,
+  fetchedEnrollmentSummary,
 }) {
   const [isOpen, setIsOpen] = useState(false);
   const [currentFilter, setCurrentFilter] = useState({
@@ -59,24 +63,12 @@ function AdvancedCriteriaDialog({
   };
 
   const fetchFilters = (params) => {
-    console.log(params);
     fetchCustomFilter(params);
-  };
-
-  const handleOpen = () => {
-    setFilters(getDefaultAppliedCustomFilters());
-    setIsOpen(true);
   };
 
   const handleClose = () => {
     setCurrentFilter(CLEARED_STATE_FILTER);
     setIsOpen(false);
-  };
-
-  const handleRemoveFilter = () => {
-    setCurrentFilter(CLEARED_STATE_FILTER);
-    setAppliedFiltersRowStructure([CLEARED_STATE_FILTER]);
-    setFilters([CLEARED_STATE_FILTER]);
   };
 
   const handleAddFilter = () => {
@@ -95,19 +87,33 @@ function AdvancedCriteriaDialog({
     return updatedJsonExt;
   }
 
+  const handleRemoveFilter = () => {
+    setCurrentFilter(CLEARED_STATE_FILTER);
+    setAppliedFiltersRowStructure([CLEARED_STATE_FILTER]);
+    setFilters([CLEARED_STATE_FILTER]);
+  };
+
   const saveCriteria = () => {
     setAppliedFiltersRowStructure(filters);
     const outputFilters = JSON.stringify(
       filters.map(({
-        filter, value, field, type, amount,
+        filter, value, field, type,
       }) => ({
-        amount,
         custom_filter_condition: `${field}__${filter}__${type}=${value}`,
       })),
     );
     const jsonExt = updateJsonExt(objectToSave.jsonExt, outputFilters);
     updateAttributes(jsonExt);
     setAppliedCustomFilters(outputFilters);
+
+    // Parse the jsonExt string to extract advanced_criteria
+    const jsonData = JSON.parse(jsonExt);
+    const advancedCriteria = jsonData.advanced_criteria || [];
+
+    // Extract custom_filter_condition values and construct customFilters array
+    const customFilters = advancedCriteria.map((criterion) => `"${criterion.custom_filter_condition}"`);
+    const params = [`customFilters: [${customFilters}]`];
+    fetchIndividualEnrollmentSummary(params);
     handleClose();
   };
 
@@ -136,119 +142,113 @@ function AdvancedCriteriaDialog({
 
   return (
     <>
-      <Button
-        onClick={handleOpen}
-        variant="outlined"
-        color="#DFEDEF"
-        className={classes.button}
-        style={{
-          border: '0px',
-          textAlign: 'right',
-          display: 'block',
-          marginLeft: 'auto',
-          marginRight: 0,
-        }}
+      {filters.map((filter, index) => (
+        <AdvancedCriteriaRowValue
+          customFilters={customFilters}
+          currentFilter={filter}
+          setCurrentFilter={setCurrentFilter}
+          index={index}
+          filters={filters}
+          setFilters={setFilters}
+        />
+      ))}
+      <div
+        style={{ backgroundColor: '#DFEDEF', paddingLeft: '10px', paddingBottom: '10px' }}
       >
-        {formatMessage(intl, 'paymentPlan', 'paymentPlan.advancedCriteria')}
-      </Button>
-      <Dialog
-        open={isOpen}
-        onClose={handleClose}
-        PaperProps={{
-          style: {
-            width: 900,
-            maxWidth: 900,
-          },
-        }}
-      >
-        <DialogTitle
+        <AddCircle
           style={{
-            marginTop: '10px',
+            border: 'thin solid',
+            borderRadius: '40px',
+            width: '16px',
+            height: '16px',
+          }}
+          onClick={handleAddFilter}
+        />
+        <Button
+          onClick={handleAddFilter}
+          variant="outlined"
+          style={{
+            border: '0px',
+            marginBottom: '6px',
+            fontSize: '0.8rem',
           }}
         >
-          {formatMessage(intl, 'paymentPlan', 'paymentPlan.advancedCriteria.button.AdvancedCriteria')}
-        </DialogTitle>
-        <DialogContent>
-          {filters.map((filter, index) => (
-            <AdvancedCriteriaRowValue
-              customFilters={customFilters}
-              currentFilter={filter}
-              setCurrentFilter={setCurrentFilter}
-              index={index}
-              filters={filters}
-              setFilters={setFilters}
-            />
-          ))}
-          <div
-            style={{ backgroundColor: '#DFEDEF', paddingLeft: '10px', paddingBottom: '10px' }}
-          >
-            <AddCircle
-              style={{
-                border: 'thin solid',
-                borderRadius: '40px',
-                width: '16px',
-                height: '16px',
-              }}
-              onClick={handleAddFilter}
-            />
-            <Button
-              onClick={handleAddFilter}
-              variant="outlined"
-              style={{
-                border: '0px',
-                marginBottom: '6px',
-                fontSize: '0.8rem',
-              }}
-            >
-              {formatMessage(intl, 'paymentPlan', 'paymentPlan.advancedCriteria.button.addFilters')}
-            </Button>
-          </div>
-        </DialogContent>
-        <DialogActions
-          style={{
-            display: 'inline',
-            paddingLeft: '10px',
-            marginTop: '25px',
-            marginBottom: '15px',
-          }}
-        >
-          <div>
-            <div style={{ float: 'left' }}>
-              <Button
-                onClick={handleRemoveFilter}
-                variant="outlined"
-                style={{
-                  border: '0px',
-                }}
-              >
-                {formatMessage(intl, 'paymentPlan', 'paymentPlan.advancedCriteria.button.clearAllFilters')}
-              </Button>
-            </div>
-            <div style={{
-              float: 'right',
-              paddingRight: '16px',
+          {formatMessage(intl, 'paymentPlan', 'paymentPlan.advancedCriteria.button.addFilters')}
+        </Button>
+      </div>
+      <div>
+        <div style={{ float: 'left' }}>
+          <Button
+            onClick={handleRemoveFilter}
+            variant="outlined"
+            style={{
+              border: '0px',
             }}
-            >
-              <Button
-                onClick={handleClose}
-                variant="outlined"
-                autoFocus
-                style={{ margin: '0 16px' }}
-              >
-                {formatMessage(intl, 'paymentPlan', 'paymentPlan.advancedCriteria.button.cancel')}
-              </Button>
-              <Button
-                onClick={saveCriteria}
-                variant="contained"
-                color="primary"
-                autoFocus
-              >
-                {formatMessage(intl, 'paymentPlan', 'paymentPlan.advancedCriteria.button.filter')}
-              </Button>
-            </div>
-          </div>
-        </DialogActions>
-      </Dialog>
+          >
+            {formatMessage(intl, 'paymentPlan', 'paymentPlan.advancedCriteria.button.clearAllFilters')}
+          </Button>
+        </div>
+        <div style={{
+          float: 'right',
+          paddingRight: '16px',
+        }}
+        >
+          <Button
+            onClick={saveCriteria}
+            variant="contained"
+            color="primary"
+            autoFocus
+          >
+            {formatMessage(intl, 'paymentPlan', 'paymentPlan.advancedCriteria.button.filter')}
+          </Button>
+        </div>
+      </div>
+      {fetchedEnrollmentSummary && (
+      <div>
+        <Grid container spacing={2}>
+          <Grid item xs={4}>
+            <Paper elevation={3} style={{ padding: '20px' }}>
+              <Typography variant="h6" gutterBottom>
+                {formatMessage(intl, 'individual', 'individual.enrollment.totalNumberOfIndividuals')}
+              </Typography>
+              <Typography variant="body1">
+                {enrollmentSummary.totalNumberOfIndividuals}
+              </Typography>
+            </Paper>
+          </Grid>
+          <Grid item xs={4}>
+            <Paper elevation={3} style={{ padding: '20px' }}>
+              <Typography variant="h6" gutterBottom>
+                {formatMessage(intl, 'individual', 'individual.enrollment.numberOfSelectedIndividuals')}
+              </Typography>
+              <Typography variant="body1">
+                {enrollmentSummary.numberOfSelectedIndividuals}
+              </Typography>
+            </Paper>
+          </Grid>
+          <Grid item xs={4}>
+            <Paper elevation={3} style={{ padding: '20px' }}>
+              <Typography variant="h6" gutterBottom>
+                {formatMessage(intl, 'individual', 'individual.enrollment.numberOfIndividualsAssignedToProgramme')}
+              </Typography>
+              <Typography variant="body1">
+                {enrollmentSummary.numberOfIndividualsAssignedToProgramme}
+              </Typography>
+            </Paper>
+          </Grid>
+          <Grid item xs={4}>
+            <Paper elevation={3} style={{ padding: '20px' }}>
+              <Typography variant="h6" gutterBottom>
+                {formatMessage(intl, 'individual', 'individual.enrollment.numberOfIndividualsNotAssignedToProgramme')}
+              </Typography>
+              <Typography variant="body1">
+                {enrollmentSummary.numberOfIndividualsNotAssignedToProgramme}
+              </Typography>
+            </Paper>
+          </Grid>
+        </Grid>
+      </div>
+      )}
     </>
   );
 }
@@ -260,10 +260,15 @@ const mapStateToProps = (state, props) => ({
   errorCustomFilters: state.core.errorCustomFilters,
   fetchedCustomFilters: state.core.fetchedCustomFilters,
   customFilters: state.core.customFilters,
+  fetchingEnrollmentSummary: state.individual.fetchingEnrollmentSummary,
+  errorEnrollmentSummary: state.individual.errorEnrollmentSummary,
+  fetchedEnrollmentSummary: state.individual.fetchedEnrollmentSummary,
+  enrollmentSummary: state.individual.enrollmentSummary,
 });
 
 const mapDispatchToProps = (dispatch) => bindActionCreators({
   fetchCustomFilter,
+  fetchIndividualEnrollmentSummary,
 }, dispatch);
 
 export default injectIntl(withTheme(withStyles(styles)(connect(mapStateToProps, mapDispatchToProps)(AdvancedCriteriaDialog))));

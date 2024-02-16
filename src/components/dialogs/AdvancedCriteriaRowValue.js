@@ -40,7 +40,7 @@ function AdvancedCriteriaRowValue({
     if (attribute === 'field') {
       updatedFilter = {
         ...{
-          filter: '', value: '', type: value.type, amount: '',
+          filter: '', value: '', type: value.type,
         },
       };
     }
@@ -157,18 +157,6 @@ function AdvancedCriteriaRowValue({
       {currentFilter.field !== '' && currentFilter.filter !== '' ? (
         <Grid item xs={3} className={classes.item}>
           {renderInputBasedOnType(currentFilter.type)}
-        </Grid>
-      ) : (<></>) }
-      {currentFilter.field !== '' && currentFilter.filter !== '' && currentFilter.value !== '' ? (
-        <Grid item xs={2} className={classes.item}>
-          <NumberInput
-            min={0}
-            displayZero
-            module="paymentPlan"
-            label="paymentPlan.advancedCriteria.amount"
-            value={currentFilter.amount}
-            onChange={onAttributeChange('amount')}
-          />
         </Grid>
       ) : (<></>) }
     </Grid>

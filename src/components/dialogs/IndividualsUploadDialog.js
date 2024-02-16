@@ -10,7 +10,6 @@ import {
   apiHeaders,
   baseApiUrl,
   useModulesManager,
-  useTranslations,
   formatMessage,
 } from '@openimis/fe-core';
 import { withTheme, withStyles } from '@material-ui/core/styles';
@@ -18,7 +17,6 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import WorkflowsPicker from '../../pickers/WorkflowsPicker';
 import { fetchWorkflows } from '../../actions';
-import { INDIVIDUAL_MODULE_NAME } from '../../constants';
 
 const styles = (theme) => ({
   item: theme.paper.item,

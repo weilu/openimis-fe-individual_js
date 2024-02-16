@@ -16,6 +16,13 @@ const WORKFLOWS_FULL_PROJECTION = () => [
   'group',
 ];
 
+const ENROLLMENT_SUMMARY_FULL_PROJECTION = () => [
+  'totalNumberOfIndividuals',
+  'numberOfSelectedIndividuals',
+  'numberOfIndividualsAssignedToProgramme',
+  'numberOfIndividualsNotAssignedToProgramme',
+];
+
 export function fetchWorkflows() {
   const payload = formatQuery(
     'workflow',
@@ -63,6 +70,15 @@ const GROUP_FULL_PROJECTION = [
 const GROUP_HISTORY_FULL_PROJECTION = GROUP_FULL_PROJECTION.filter(
   (item) => item !== 'head {firstName, lastName}',
 );
+
+export function fetchIndividualEnrollmentSummary(params) {
+  const payload = formatQuery(
+    'individualEnrollmentSummary',
+    params,
+    ENROLLMENT_SUMMARY_FULL_PROJECTION(),
+  );
+  return graphql(payload, ACTION_TYPE.ENROLLMENT_SUMMARY);
+}
 
 export function fetchIndividuals(params) {
   const payload = formatPageQueryWithCount('individual', params, INDIVIDUAL_FULL_PROJECTION);

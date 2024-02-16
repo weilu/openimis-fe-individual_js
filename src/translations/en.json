@@ -40,7 +40,11 @@
     "enrollment": {
       "buttonLabel": "ENROLLMENT",
       "label": "Enroll Individuals to the program",
-      "cancel": "Cancel"
+      "cancel": "Cancel",
+      "numberOfSelectedIndividuals": "Number Of Selected Individuals",
+      "totalNumberOfIndividuals": "Total Number of Individuals",
+      "numberOfIndividualsAssignedToProgramme": "Number of Individuals Assigned To Programme",
+      "numberOfIndividualsNotAssignedToProgramme": "Number of Individuals not Assigned to Programme"
     },
     "saveButton.tooltip.enabled": "Save changes",
     "saveButton.tooltip.disabled": "Please fill General Information fields first",

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { injectIntl } from 'react-intl';
 import Button from '@material-ui/core/Button';
-import { Grid, Paper } from '@material-ui/core';
+import { Divider, Grid, Paper } from '@material-ui/core';
 import {
   decodeId,
   formatMessage,
@@ -176,7 +176,7 @@ function AdvancedCriteriaForm({
             fontSize: '0.8rem',
           }}
         >
-          {formatMessage(intl, 'paymentPlan', 'paymentPlan.advancedCriteria.button.addFilters')}
+          {formatMessage(intl, 'individual', 'individual.enrollment.addFilters')}
         </Button>
       </div>
       <div>
@@ -188,7 +188,7 @@ function AdvancedCriteriaForm({
               border: '0px',
             }}
           >
-            {formatMessage(intl, 'paymentPlan', 'paymentPlan.advancedCriteria.button.clearAllFilters')}
+            {formatMessage(intl, 'individual', 'individual.enrollment.clearAllFilters')}
           </Button>
         </div>
         <div style={{
@@ -203,12 +203,17 @@ function AdvancedCriteriaForm({
             autoFocus
             disabled={!object}
           >
-            {formatMessage(intl, 'paymentPlan', 'paymentPlan.advancedCriteria.button.filter')}
+            {formatMessage(intl, 'individual', 'individual.enrollment.previewEnrollment')}
           </Button>
         </div>
       </div>
+      <Divider />
       {fetchedEnrollmentSummary && (
       <div>
+        <div className={classes.item}>
+          {formatMessage(intl, 'individual', 'individual.enrollment.summary')}
+        </div>
+        <Divider />
         <Grid container spacing={2}>
           <Grid item xs={4}>
             <Paper elevation={3} style={{ padding: '20px' }}>
@@ -260,6 +265,21 @@ function AdvancedCriteriaForm({
               </Typography>
             </Paper>
           </Grid>
+        </Grid>
+        <Grid container spacing={4}>
+          <Grid item xs={5} />
+          <Grid item xs={5}>
+            <Button
+              onClick={() => {}}
+              variant="contained"
+              color="primary"
+              autoFocus
+              disabled={!object}
+            >
+              {formatMessage(intl, 'individual', 'individual.enrollment.confirmEnrollment')}
+            </Button>
+          </Grid>
+          <Grid item xs={5} />
         </Grid>
       </div>
       )}

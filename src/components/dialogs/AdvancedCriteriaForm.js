@@ -179,7 +179,7 @@ function AdvancedCriteriaForm({
       };
       confirmEnrollment(
         params,
-        'Confirmed enrollment',
+        formatMessage(intl, 'individual', 'individual.enrollment.mutationLabel'),
       );
     }
     return () => confirmed && clearConfirm(false);

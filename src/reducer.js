@@ -35,6 +35,9 @@ export const ACTION_TYPE = {
   SEARCH_INDIVIDUAL_HISTORY: 'SEARCH_INDIVIDUAL_HISTORY',
   SEARCH_GROUP_HISTORY: 'SEARCH_GROUP_HISTORY',
   SET_GROUP_INDIVIDUAL: 'SET_GROUP_INDIVIDUAL',
+  GET_WORKFLOWS: 'GET_WORKFLOWS',
+  ENROLLMENT_SUMMARY: 'ENROLLMENT_SUMMARY',
+  CONFIRM_ENROLLMENT: 'CONFIRM_ENROLLMENT',
 };
 
 function reducer(
@@ -94,6 +97,16 @@ function reducer(
     groupHistory: [],
     groupHistoryPageInfo: {},
     groupHistoryTotalCount: 0,
+    fetchingWorkflows: true,
+    fetchedWorkflows: false,
+    workflows: [],
+    workflowsPageInfo: {},
+    workflowsGroupBeneficiaries: null,
+    errorWorkflows: null,
+    enrollmentSummary: [],
+    enrollmentSummaryError: null,
+    fetchingEnrollmentSummary: true,
+    fetchedEnrollmentSummary: false,
   },
   action,
 ) {
@@ -438,6 +451,52 @@ function reducer(
         groupIndividualsPageInfo: {},
         groupIndividualsTotalCount: 1,
         errorGroupIndividuals: null,
+      };
+    case REQUEST(ACTION_TYPE.GET_WORKFLOWS):
+      return {
+        ...state,
+        fetchingWorkflows: true,
+        fetchedWorkflows: false,
+        workflows: [],
+        workflowsPageInfo: {},
+        errorWorkflows: null,
+      };
+    case SUCCESS(ACTION_TYPE.GET_WORKFLOWS):
+      return {
+        ...state,
+        fetchingWorkflows: false,
+        fetchedWorkflows: true,
+        workflows: action.payload.data.workflow || [],
+        workflowsPageInfo: pageInfo(action.payload.data.benefitPlan),
+        errorWorkflows: formatGraphQLError(action.payload),
+      };
+    case ERROR(ACTION_TYPE.GET_WORKFLOWS):
+      return {
+        ...state,
+        fetchingWorkflows: false,
+        errorWorkflows: formatServerError(action.payload),
+      };
+    case REQUEST(ACTION_TYPE.ENROLLMENT_SUMMARY):
+      return {
+        ...state,
+        fetchingEnrollmentSummary: true,
+        fetchedEnrollmentSummary: false,
+        enrollmentSummary: {},
+        enrollmentSummaryError: null,
+      };
+    case SUCCESS(ACTION_TYPE.ENROLLMENT_SUMMARY):
+      return {
+        ...state,
+        fetchingEnrollmentSummary: false,
+        fetchedEnrollmentSummary: true,
+        enrollmentSummary: action.payload.data.individualEnrollmentSummary,
+        enrollmentSummaryError: formatGraphQLError(action.payload),
+      };
+    case ERROR(ACTION_TYPE.ENROLLMENT_SUMMARY):
+      return {
+        ...state,
+        fetchingEnrollmentSummary: false,
+        enrollmentSummaryError: formatServerError(action.payload),
       };
     case REQUEST(ACTION_TYPE.MUTATION):
       return dispatchMutationReq(state, action);

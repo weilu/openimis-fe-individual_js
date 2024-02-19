@@ -1,6 +1,7 @@
 import {
   graphql,
   formatPageQuery,
+  formatQuery,
   formatPageQueryWithCount,
   formatMutation,
   formatGQLString,
@@ -9,6 +10,28 @@ import { ACTION_TYPE } from './reducer';
 import {
   CLEAR, ERROR, REQUEST, SET, SUCCESS,
 } from './util/action-type';
+
+const WORKFLOWS_FULL_PROJECTION = () => [
+  'name',
+  'group',
+];
+
+const ENROLLMENT_SUMMARY_FULL_PROJECTION = () => [
+  'totalNumberOfIndividuals',
+  'numberOfSelectedIndividuals',
+  'numberOfIndividualsAssignedToProgramme',
+  'numberOfIndividualsNotAssignedToProgramme',
+  'numberOfIndividualsAssignedToSelectedProgramme',
+];
+
+export function fetchWorkflows() {
+  const payload = formatQuery(
+    'workflow',
+    [],
+    WORKFLOWS_FULL_PROJECTION(),
+  );
+  return graphql(payload, ACTION_TYPE.GET_WORKFLOWS);
+}
 
 const INDIVIDUAL_FULL_PROJECTION = [
   'id',
@@ -48,6 +71,15 @@ const GROUP_FULL_PROJECTION = [
 const GROUP_HISTORY_FULL_PROJECTION = GROUP_FULL_PROJECTION.filter(
   (item) => item !== 'head {firstName, lastName}',
 );
+
+export function fetchIndividualEnrollmentSummary(params) {
+  const payload = formatQuery(
+    'individualEnrollmentSummary',
+    params,
+    ENROLLMENT_SUMMARY_FULL_PROJECTION(),
+  );
+  return graphql(payload, ACTION_TYPE.ENROLLMENT_SUMMARY);
+}
 
 export function fetchIndividuals(params) {
   const payload = formatPageQueryWithCount('individual', params, INDIVIDUAL_FULL_PROJECTION);
@@ -159,12 +191,35 @@ function formatGroupIndividualGQL(groupIndividual) {
     ${groupIndividual?.group.id ? `groupId: "${groupIndividual.group.id}"` : ''}`;
 }
 
+function formatConfirmEnrollmentGQL(params) {
+  return `
+    ${params?.customFilters ? `customFilters: ${params.customFilters}` : ''}
+    ${params?.benefitPlanId ? `benefitPlanId: ${params.benefitPlanId}` : ''}
+    ${params?.status ? `status: ${params.status}` : ''}`;
+}
+
 export function updateIndividual(individual, clientMutationLabel) {
   const mutation = formatMutation('updateIndividual', formatIndividualGQL(individual), clientMutationLabel);
   const requestedDateTime = new Date();
   return graphql(
     mutation.payload,
     [REQUEST(ACTION_TYPE.MUTATION), SUCCESS(ACTION_TYPE.UPDATE_INDIVIDUAL), ERROR(ACTION_TYPE.MUTATION)],
+    {
+      actionType: ACTION_TYPE.UPDATE_INDIVIDUAL,
+      clientMutationId: mutation.clientMutationId,
+      clientMutationLabel,
+      requestedDateTime,
+    },
+  );
+}
+
+export function confirmEnrollment(params, clientMutationLabel) {
+  // eslint-disable-next-line max-len
+  const mutation = formatMutation('confirmIndividualEnrollment', formatConfirmEnrollmentGQL(params), clientMutationLabel);
+  const requestedDateTime = new Date();
+  return graphql(
+    mutation.payload,
+    [REQUEST(ACTION_TYPE.MUTATION), SUCCESS(ACTION_TYPE.CONFIRM_ENROLLMENT), ERROR(ACTION_TYPE.MUTATION)],
     {
       actionType: ACTION_TYPE.UPDATE_INDIVIDUAL,
       clientMutationId: mutation.clientMutationId,

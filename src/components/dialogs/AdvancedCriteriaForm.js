@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import React, { useEffect, useState } from 'react';
 import { injectIntl } from 'react-intl';
 import Button from '@material-ui/core/Button';
@@ -5,10 +6,10 @@ import { Divider, Grid, Paper } from '@material-ui/core';
 import {
   decodeId,
   formatMessage,
+  formatMessageWithValues,
   fetchCustomFilter,
   coreConfirm,
   clearConfirm,
-  historyPush,
 } from '@openimis/fe-core';
 import { withTheme, withStyles } from '@material-ui/core/styles';
 import { connect } from 'react-redux';
@@ -34,6 +35,7 @@ function AdvancedCriteriaForm({
   moduleName,
   objectType,
   setAppliedCustomFilters,
+  // eslint-disable-next-line no-unused-vars
   appliedFiltersRowStructure,
   setAppliedFiltersRowStructure,
   updateAttributes,
@@ -41,15 +43,13 @@ function AdvancedCriteriaForm({
   additionalParams,
   fetchIndividualEnrollmentSummary,
   enrollmentSummary,
-  errorEnrollmentSummary,
-  fetchingEnrollmentSummary,
   fetchedEnrollmentSummary,
   confirmEnrollment,
   confirmed,
   clearConfirm,
   coreConfirm,
 }) {
-  const [isOpen, setIsOpen] = useState(false);
+  // eslint-disable-next-line no-unused-vars
   const [currentFilter, setCurrentFilter] = useState({
     field: '', filter: '', type: '', value: '', amount: '',
   });
@@ -75,7 +75,6 @@ function AdvancedCriteriaForm({
 
   const handleClose = () => {
     setCurrentFilter(CLEARED_STATE_FILTER);
-    setIsOpen(false);
   };
 
   const handleAddFilter = () => {
@@ -85,6 +84,7 @@ function AdvancedCriteriaForm({
 
   function updateJsonExt(inputJsonExt, outputFilters) {
     const existingData = JSON.parse(inputJsonExt || '{}');
+    // eslint-disable-next-line no-prototype-builtins
     if (!existingData.hasOwnProperty('advanced_criteria')) {
       existingData.advanced_criteria = [];
     }
@@ -152,8 +152,8 @@ function AdvancedCriteriaForm({
 
   const openConfirmEnrollmentDialog = () => {
     coreConfirm(
-      'Confirm',
-      formatMessage(intl, 'individual', 'individul.enrollment.confirmMessageDialog'),
+      formatMessage(intl, 'individual', 'individual.enrollment.confirmTitle'),
+      formatMessageWithValues(intl, 'individual', 'individual.enrollment.confirmMessageDialog', { benefitPlanName: object.name }),
     );
   };
 
@@ -175,7 +175,7 @@ function AdvancedCriteriaForm({
       const params = {
         customFilters: `[${customFilters}]`,
         benefitPlanId: `"${decodeId(object.id)}"`,
-        status: '"ACTIVE"',
+        status: `"${objectToSave.status}"`,
       };
       confirmEnrollment(
         params,
@@ -307,6 +307,7 @@ function AdvancedCriteriaForm({
           <Grid item xs={4}>
             <Paper elevation={3} style={{ padding: '20px' }}>
               <Typography variant="h6" gutterBottom>
+                {/* eslint-disable-next-line max-len */}
                 {formatMessage(intl, 'individual', 'individual.enrollment.numberOfIndividualsAssignedToSelectedProgramme')}
               </Typography>
               <Typography variant="body1">
@@ -336,6 +337,7 @@ function AdvancedCriteriaForm({
   );
 }
 
+// eslint-disable-next-line no-unused-vars
 const mapStateToProps = (state, props) => ({
   rights: !!state.core && !!state.core.user && !!state.core.user.i_user ? state.core.user.i_user.rights : [],
   confirmed: state.core.confirmed,
@@ -357,4 +359,6 @@ const mapDispatchToProps = (dispatch) => bindActionCreators({
   coreConfirm,
 }, dispatch);
 
-export default injectIntl(withTheme(withStyles(styles)(connect(mapStateToProps, mapDispatchToProps)(AdvancedCriteriaForm))));
+export default injectIntl(
+  withTheme(withStyles(styles)(connect(mapStateToProps, mapDispatchToProps)(AdvancedCriteriaForm))),
+);

@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
@@ -25,9 +25,9 @@ function EnrollmentPage({
   const modulesManager = useModulesManager();
   const classes = useStyles();
   const history = useHistory();
-  const { formatMessage, formatMessageWithValues } = useTranslations('individual', modulesManager);
+  const { formatMessage } = useTranslations('individual', modulesManager);
 
-  const [editedEnrollment, setEditedEnrollment] = useState({});
+  const [editedEnrollment, setEditedEnrollment] = useState({ status: 'ACTIVE' });
 
   const back = () => history.goBack();
 
@@ -37,15 +37,15 @@ function EnrollmentPage({
     <div className={classes.page}>
       <Form
         key=""
-        module="payroll"
-        title="Enrollment of Individuals to the Programme"
+        module="individual"
+        title={formatMessage('individual.enrollment.title')}
         titleParams="Enrollment"
         edited={editedEnrollment}
         onEditedChanged={setEditedEnrollment}
         back={back}
         mandatoryFieldsEmpty={null}
         canSave={() => {}}
-        save={() => {}}
+        save={null}
         HeadPanel={EnrollmentHeadPanel}
         rights={rights}
         actions={actions}
@@ -60,8 +60,8 @@ const mapDispatchToProps = (dispatch) => bindActionCreators({
   journalize,
 }, dispatch);
 
+// eslint-disable-next-line no-unused-vars
 const mapStateToProps = (state, props) => ({
-  statePayrollUuid: props?.match?.params.payroll_uuid,
   rights: state.core?.user?.i_user?.rights ?? [],
   confirmed: state.core.confirmed,
   submittingMutation: state.payroll.submittingMutation,

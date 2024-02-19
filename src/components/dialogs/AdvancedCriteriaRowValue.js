@@ -1,4 +1,8 @@
-import React, { useEffect, useState } from 'react';
+/* eslint-disable react/jsx-props-no-spreading */
+/* eslint-disable react/jsx-no-useless-fragment */
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+import React from 'react';
 import { injectIntl } from 'react-intl';
 import {
   PublishedComponent,
@@ -25,6 +29,7 @@ const styles = (theme) => ({
 });
 
 function AdvancedCriteriaRowValue({
+  // eslint-disable-next-line no-unused-vars
   intl,
   classes,
   customFilters,

@@ -1,6 +1,6 @@
 /* eslint-disable max-len */
 /* eslint-disable camelcase */
-import React, { Fragment } from 'react';
+import React from 'react';
 import { injectIntl } from 'react-intl';
 
 import { Grid, Divider } from '@material-ui/core';
@@ -10,6 +10,7 @@ import {
   decodeId,
   FormPanel,
   PublishedComponent,
+  formatMessage,
   withModulesManager,
 } from '@openimis/fe-core';
 import AdvancedCriteriaForm from './dialogs/AdvancedCriteriaForm';
@@ -68,6 +69,7 @@ class EnrollmentHeadPanel extends FormPanel {
   };
 
   render() {
+    // eslint-disable-next-line no-unused-vars
     const { edited, classes, intl } = this.props;
     const enrollment = { ...edited };
     const { appliedCustomFilters, appliedFiltersRowStructure } = this.state;
@@ -88,6 +90,7 @@ class EnrollmentHeadPanel extends FormPanel {
             <PublishedComponent
               pubRef="socialProtection.BeneficiaryStatusPicker"
               required
+              withNull={false}
               filterLabels={false}
               onChange={(status) => this.updateAttribute('status', status)}
               value={enrollment?.status}
@@ -98,7 +101,7 @@ class EnrollmentHeadPanel extends FormPanel {
         <Grid>
           <>
             <div className={classes.item}>
-              Criteria
+              {formatMessage(intl, 'individual', 'individual.enrollment.criteria')}
             </div>
             <Divider />
             <Grid container className={classes.item}>

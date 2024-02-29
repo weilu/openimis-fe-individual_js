@@ -20,6 +20,9 @@
     "lastName": "Last Name",
     "dob": "Day of birth",
     "mandatoryFieldsEmptyError": "* These fields are required",
+    "benefits": {
+      "label": "Benefits"
+    },
     "delete": {
       "confirm": {
         "title": "Delete {firstName} {lastName}?",

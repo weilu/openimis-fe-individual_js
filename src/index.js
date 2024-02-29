@@ -39,6 +39,7 @@ import {
 import { GROUP_LABEL, INDIVIDUAL_LABEL } from './constants';
 import { GroupCreateTaskItemFormatters, GroupCreateTaskTableHeaders } from './components/tasks/GroupCreateTasks';
 import IndividualsUploadDialog from './components/dialogs/IndividualsUploadDialog';
+import { BenefitsTabLabel, BenefitsTabPanel } from './components/BenefitsTab';
 
 const ROUTE_INDIVIDUALS = 'individuals';
 const ROUTE_INDIVIDUAL = 'individuals/individual';
@@ -83,6 +84,7 @@ const DEFAULT_CONFIG = {
     GroupChangelogTabLabel,
     GroupTaskTabLabel,
     IndividalTaskTabLabel,
+    BenefitsTabLabel,
   ],
   'individual.TabPanel.panel': [
     IndividualsListTabPanel,
@@ -91,6 +93,7 @@ const DEFAULT_CONFIG = {
     IndividalChangelogTabPanel,
     GroupTaskTabPanel,
     IndividalTaskTabPanel,
+    BenefitsTabPanel,
   ],
   'individual.BenefitPlansListTabLabel': [BENEFIT_PLAN_TABS_LABEL_REF_KEY],
   'individual.BenefitPlansListTabPanel': [BENEFIT_PLAN_TABS_PANEL_REF_KEY],

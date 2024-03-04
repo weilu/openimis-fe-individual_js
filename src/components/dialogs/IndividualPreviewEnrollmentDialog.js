@@ -19,6 +19,8 @@ function IndividualPreviewEnrollmentDialog({
   rights,
   advancedCriteria,
   benefitPlanToEnroll,
+  enrollmentSummary,
+  confirmed,
 }) {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -41,6 +43,7 @@ function IndividualPreviewEnrollmentDialog({
         color="primary"
         className={classes.button}
         style={{ marginLeft: '16px' }}
+        disabled={enrollmentSummary?.numberOfIndividualsToUpload === '0' || confirmed}
       >
         {formatMessage('individual.enrollment.previewIndividuals')}
       </Button>

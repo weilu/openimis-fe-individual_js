@@ -340,7 +340,7 @@ function AdvancedCriteriaForm({
               variant="contained"
               color="primary"
               autoFocus
-              disabled={!object || confirmed}
+              disabled={!object || confirmed || enrollmentSummary.numberOfIndividualsToUpload === '0'}
             >
               {formatMessage(intl, 'individual', 'individual.enrollment.confirmEnrollment')}
             </Button>
@@ -349,6 +349,8 @@ function AdvancedCriteriaForm({
               classes={classes}
               advancedCriteria={filtersToApply}
               benefitPlanToEnroll={object.id}
+              enrollmentSummary={enrollmentSummary}
+              confirmed={confirmed}
             />
           </Grid>
           <Grid item xs={5} />

@@ -20,6 +20,7 @@ import AdvancedCriteriaRowValue from './AdvancedCriteriaRowValue';
 import { CLEARED_STATE_FILTER, INDIVIDUAL } from '../../constants';
 import { isBase64Encoded, isEmptyObject } from '../../utils';
 import { confirmEnrollment, fetchIndividualEnrollmentSummary } from '../../actions';
+import IndividualPreviewEnrollmentDialog from './IndividualPreviewEnrollmentDialog';
 
 const styles = (theme) => ({
   item: theme.paper.item,
@@ -48,12 +49,14 @@ function AdvancedCriteriaForm({
   confirmed,
   clearConfirm,
   coreConfirm,
+  rights,
 }) {
   // eslint-disable-next-line no-unused-vars
   const [currentFilter, setCurrentFilter] = useState({
     field: '', filter: '', type: '', value: '', amount: '',
   });
   const [filters, setFilters] = useState(getDefaultAppliedCustomFilters());
+  const [filtersToApply, setFiltersToApply] = useState(null);
 
   const createParams = (moduleName, objectTypeName, uuidOfObject = null, additionalParams = null) => {
     const params = [
@@ -119,6 +122,7 @@ function AdvancedCriteriaForm({
 
     // Extract custom_filter_condition values and construct customFilters array
     const customFilters = advancedCriteria.map((criterion) => `"${criterion.custom_filter_condition}"`);
+    setFiltersToApply(customFilters);
     const params = [
       `customFilters: [${customFilters}]`,
       `benefitPlanId: "${decodeId(object.id)}"`,
@@ -172,6 +176,7 @@ function AdvancedCriteriaForm({
 
       // Extract custom_filter_condition values and construct customFilters array
       const customFilters = advancedCriteria.map((criterion) => `"${criterion.custom_filter_condition}"`);
+      setFiltersToApply(customFilters);
       const params = {
         customFilters: `[${customFilters}]`,
         benefitPlanId: `"${decodeId(object.id)}"`,
@@ -327,7 +332,7 @@ function AdvancedCriteriaForm({
             </Paper>
           </Grid>
         </Grid>
-        <Grid container spacing={4}>
+        <Grid container spacing={3}>
           <Grid item xs={5} />
           <Grid item xs={5}>
             <Button
@@ -339,6 +344,12 @@ function AdvancedCriteriaForm({
             >
               {formatMessage(intl, 'individual', 'individual.enrollment.confirmEnrollment')}
             </Button>
+            <IndividualPreviewEnrollmentDialog
+              rights={rights}
+              classes={classes}
+              advancedCriteria={filtersToApply}
+              benefitPlanToEnroll={object.id}
+            />
           </Grid>
           <Grid item xs={5} />
         </Grid>

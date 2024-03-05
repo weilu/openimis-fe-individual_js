@@ -201,6 +201,20 @@
     "groupIndividualRolePicker.RECIPIENT": "RECIPIENT",
     "groupIndividualRolePicker": "Role"
   },
+  "groupIndividualHistoryList": {
+    "searcherResultsTitle": "{groupIndividualHistoryTotalCount} Historical Records Found" 
+  },
+  "groupIndividualHistory": {
+    "individual": {
+      "role": "Role",
+      "groupId": "Group ID",
+      "individualId": "Individual ID"
+    },
+    "label": "Group History",
+    "groupIndividualRolePicker.HEAD":  "HEAD",
+    "groupIndividualRolePicker.RECIPIENT": "RECIPIENT",
+    "groupIndividualRolePicker": "Role"
+  },
   "groupChangelog.label": "Change Log",
   "groupTasks.label": "Tasks",
   "groupPicker": {

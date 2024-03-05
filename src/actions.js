@@ -69,6 +69,17 @@ const GROUP_FULL_PROJECTION = [
   'userUpdated {username}',
 ];
 
+const GROUP_INDIVIDUAL_HISTORY_FULL_PROJECTION = [
+  'id',
+  'individual {id, firstName, lastName, dob}',
+  'group {id}',
+  'role',
+  'isDeleted',
+  'dateCreated',
+  'dateUpdated',
+  'jsonExt',
+];
+
 const GROUP_HISTORY_FULL_PROJECTION = GROUP_FULL_PROJECTION.filter(
   (item) => item !== 'head {firstName, lastName}',
 );
@@ -123,6 +134,11 @@ export function fetchGroup(params) {
 export function fetchGroupHistory(params) {
   const payload = formatPageQueryWithCount('groupHistory', params, GROUP_HISTORY_FULL_PROJECTION);
   return graphql(payload, ACTION_TYPE.SEARCH_GROUP_HISTORY);
+}
+
+export function fetchGroupIndividualHistory(params) {
+  const payload = formatPageQueryWithCount('groupIndividualHistory', params, GROUP_INDIVIDUAL_HISTORY_FULL_PROJECTION);
+  return graphql(payload, ACTION_TYPE.SEARCH_GROUP_INDIVIDUAL_HISTORY);
 }
 
 export function fetchUploadHistory(params) {

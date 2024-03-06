@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react';
 import { injectIntl } from 'react-intl';
-import { TextInput, PublishedComponent, formatMessage } from '@openimis/fe-core';
+import { formatMessage } from '@openimis/fe-core';
 import { Grid } from '@material-ui/core';
 import { withTheme, withStyles } from '@material-ui/core/styles';
 import _debounce from 'lodash/debounce';
-import { CONTAINS_LOOKUP, DEFAULT_DEBOUNCE_TIME, EMPTY_STRING } from '../constants';
+import { DEFAULT_DEBOUNCE_TIME } from '../constants';
 import { defaultFilterStyles } from '../util/styles';
 import GroupIndividualRolePicker from '../pickers/GroupIndividualRolePicker';
 import GroupPicker from '../pickers/GroupPicker';
@@ -15,8 +15,6 @@ function GroupIndividualHistoryFilter({
   const debouncedOnChangeFilters = _debounce(onChangeFilters, DEFAULT_DEBOUNCE_TIME);
 
   const filterValue = (filterName) => filters?.[filterName]?.value;
-
-  const filterTextFieldValue = (filterName) => filters?.[filterName]?.value ?? EMPTY_STRING;
 
   const onChangeStringFilter = (filterName, lookup = null) => (value) => {
     if (lookup) {

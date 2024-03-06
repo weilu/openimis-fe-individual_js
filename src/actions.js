@@ -78,6 +78,7 @@ const GROUP_INDIVIDUAL_HISTORY_FULL_PROJECTION = [
   'dateCreated',
   'dateUpdated',
   'jsonExt',
+  'version',
 ];
 
 const GROUP_HISTORY_FULL_PROJECTION = GROUP_FULL_PROJECTION.filter(

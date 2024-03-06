@@ -7,6 +7,7 @@ import _debounce from 'lodash/debounce';
 import { CONTAINS_LOOKUP, DEFAULT_DEBOUNCE_TIME, EMPTY_STRING } from '../constants';
 import { defaultFilterStyles } from '../util/styles';
 import GroupIndividualRolePicker from '../pickers/GroupIndividualRolePicker';
+import GroupPicker from '../pickers/GroupPicker';
 
 function GroupIndividualHistoryFilter({
   intl, classes, filters, onChangeFilters, groupId,
@@ -47,32 +48,15 @@ function GroupIndividualHistoryFilter({
   return (
     <Grid container className={classes.form}>
       <Grid item xs={2} className={classes.item}>
-        <TextInput
-          module="individual"
-          label="individual.firstName"
-          value={filterTextFieldValue('individual_FirstName')}
-          onChange={onChangeStringFilter('individual_FirstName', CONTAINS_LOOKUP)}
-        />
-      </Grid>
-      <Grid item xs={2} className={classes.item}>
-        <TextInput
-          module="individual"
-          label="individual.lastName"
-          value={filterTextFieldValue('individual_LastName')}
-          onChange={onChangeStringFilter('individual_LastName', CONTAINS_LOOKUP)}
-        />
-      </Grid>
-      <Grid item xs={2} className={classes.item}>
-        <PublishedComponent
-          pubRef="core.DatePicker"
-          module="individual"
-          label="individual.dob"
-          value={filterValue('individual_Dob')}
-          onChange={(v) => onChangeFilters([
+        <GroupPicker
+          withNull
+          nullLabel={formatMessage(intl, 'individual', 'any')}
+          value={filterValue('group_Id')}
+          onChange={(value) => onChangeFilters([
             {
-              id: 'individual_Dob',
-              value: v,
-              filter: `individual_Dob: "${v}"`,
+              id: 'group_Id',
+              value,
+              filter: `group_Id: "${value}"`,
             },
           ])}
         />

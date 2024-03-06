@@ -562,7 +562,7 @@ function reducer(
           id: decodeId(groupIndividualHistory.id),
         })),
         // eslint-disable-next-line max-len
-        groupIndividualHistoryTotalCount: action.payload.data.groupIndividualHistoryPageInfo ? action.payload.data.groupIndividualHistoryPageInfo.totalCount : null,
+        groupIndividualHistoryTotalCount: action.payload.data.groupIndividualHistory ? action.payload.data.groupIndividualHistory.totalCount : null,
         groupIndividualHistoryPageInfo: pageInfo(action.payload.data.groupIndividualHistoryPageInfo),
         errorGroupIndividualHistory: formatGraphQLError(action.payload),
       };

@@ -2,6 +2,7 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { injectIntl } from 'react-intl';
 import {
+  decodeId,
   useModulesManager,
   useTranslations,
   Searcher,
@@ -29,25 +30,26 @@ function GroupIndividualHistorySearcher({
 
   const headers = () => {
     const headers = [
-      'individual.firstName',
-      'individual.lastName',
-      'individual.dob',
+      'group.id',
+      'groupIndividual.dateJoined',
       'groupIndividual.individual.role',
-      'emptyLabel',
+      'groupIndividual.statusOfMembership',
     ];
     return headers;
   };
 
   const itemFormatters = () => {
     const formatters = [
-      (groupIndividualHistory) => groupIndividualHistory.individual.firstName,
-      (groupIndividualHistory) => groupIndividualHistory.individual.lastName,
+      (groupIndividualHistory) => decodeId(groupIndividualHistory.group.id),
       (groupIndividualHistory) => (
-        groupIndividualHistory.individual.dob
-          ? formatDateFromISO(modulesManager, groupIndividualHistory.individual.dob)
+        groupIndividualHistory.dateCreated
+          ? formatDateFromISO(modulesManager, groupIndividualHistory.dateCreated)
           : EMPTY_STRING
       ),
       (groupIndividualHistory) => groupIndividualHistory.role,
+      (groupIndividualHistory) => (
+        groupIndividualHistory.version === groupIndividualHistoryTotalCount ? 'Active' : 'Past'
+      ),
     ];
     return formatters;
   };
@@ -56,8 +58,7 @@ function GroupIndividualHistorySearcher({
 
   const sorts = () => [
     ['id', true],
-    ['dateUpdated', true],
-    ['version', true],
+    ['dateCreated', true],
   ];
 
   const defaultFilters = () => {
@@ -100,7 +101,7 @@ function GroupIndividualHistorySearcher({
         sorts={sorts}
         rowsPerPageOptions={ROWS_PER_PAGE_OPTIONS}
         defaultPageSize={DEFAULT_PAGE_SIZE}
-        defaultOrderBy="id"
+        defaultOrderBy="-version"
         rowIdentifier={rowIdentifier}
         defaultFilters={defaultFilters()}
         cacheFiltersKey="groupIndividualHistoryFilterCache"

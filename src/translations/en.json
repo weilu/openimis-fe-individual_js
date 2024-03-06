@@ -199,7 +199,9 @@
     },
     "groupIndividualRolePicker.HEAD":  "HEAD",
     "groupIndividualRolePicker.RECIPIENT": "RECIPIENT",
-    "groupIndividualRolePicker": "Role"
+    "groupIndividualRolePicker": "Role",
+    "dateJoined": "Joining Date",
+    "statusOfMembership": "Status Of Membership"
   },
   "groupIndividualHistoryList": {
     "searcherResultsTitle": "{groupIndividualHistoryTotalCount} Historical Records Found" 

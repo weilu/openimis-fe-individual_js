@@ -50,6 +50,7 @@ function AdvancedCriteriaForm({
   clearConfirm,
   coreConfirm,
   rights,
+  edited,
 }) {
   // eslint-disable-next-line no-unused-vars
   const [currentFilter, setCurrentFilter] = useState({
@@ -57,6 +58,22 @@ function AdvancedCriteriaForm({
   });
   const [filters, setFilters] = useState(getDefaultAppliedCustomFilters());
   const [filtersToApply, setFiltersToApply] = useState(null);
+
+  const getBenefitPlanDefaultCriteria = () => {
+    const { jsonExt } = edited?.benefitPlan ?? {};
+    try {
+      const jsonData = JSON.parse(jsonExt);
+      return jsonData.advanced_criteria || [];
+    } catch (error) {
+      return [];
+    }
+  };
+
+  useEffect(() => {
+    if (!getDefaultAppliedCustomFilters().length) {
+      setFilters(getBenefitPlanDefaultCriteria());
+    }
+  }, [edited]);
 
   const createParams = (moduleName, objectTypeName, uuidOfObject = null, additionalParams = null) => {
     const params = [

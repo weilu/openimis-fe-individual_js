@@ -40,6 +40,11 @@ import { GROUP_LABEL, INDIVIDUAL_LABEL } from './constants';
 import { GroupCreateTaskItemFormatters, GroupCreateTaskTableHeaders } from './components/tasks/GroupCreateTasks';
 import IndividualsUploadDialog from './components/dialogs/IndividualsUploadDialog';
 import { BenefitsTabLabel, BenefitsTabPanel } from './components/BenefitsTab';
+import GroupIndividualHistorySearcher from './components/GroupIndividualHistorySearcher';
+import {
+  GroupIndividualHistoryTabLabel,
+  GroupIndividualHistoryTabPanel,
+} from './components/GroupIndividualHistoryTab';
 import AdvancedCriteriaRowValue from './components/dialogs/AdvancedCriteriaRowValue';
 
 const ROUTE_INDIVIDUALS = 'individuals';
@@ -76,26 +81,35 @@ const DEFAULT_CONFIG = {
     { key: 'individual.IndividualHistorySearcher', ref: IndividualHistorySearcher },
     { key: 'individual.GroupHistorySearcher', ref: GroupHistorySearcher },
     { key: 'individual.IndividualsUploadDialog', ref: IndividualsUploadDialog },
+    { key: 'individual.GroupIndividualHistorySearcher', ref: GroupIndividualHistorySearcher },
     { key: 'individual.AdvancedCriteriaRowValue', ref: AdvancedCriteriaRowValue },
   ],
   'individual.IndividualsUploadDialog': IndividualsUploadDialog,
   'individual.TabPanel.label': [
-    IndividualsListTabLabel,
     BenefitPlansListTabLabel,
     IndividalChangelogTabLabel,
-    GroupChangelogTabLabel,
-    GroupTaskTabLabel,
     IndividalTaskTabLabel,
     BenefitsTabLabel,
+    GroupIndividualHistoryTabLabel,
   ],
   'individual.TabPanel.panel': [
+    BenefitPlansListTabPanel,
+    IndividalChangelogTabPanel,
+    IndividalTaskTabPanel,
+    BenefitsTabPanel,
+    GroupIndividualHistoryTabPanel,
+  ],
+  'group.TabPanel.label': [
+    IndividualsListTabLabel,
+    BenefitPlansListTabLabel,
+    GroupChangelogTabLabel,
+    GroupTaskTabLabel,
+  ],
+  'group.TabPanel.panel': [
     IndividualsListTabPanel,
     BenefitPlansListTabPanel,
     GroupChangelogTabPanel,
-    IndividalChangelogTabPanel,
     GroupTaskTabPanel,
-    IndividalTaskTabPanel,
-    BenefitsTabPanel,
   ],
   'individual.BenefitPlansListTabLabel': [BENEFIT_PLAN_TABS_LABEL_REF_KEY],
   'individual.BenefitPlansListTabPanel': [BENEFIT_PLAN_TABS_PANEL_REF_KEY],

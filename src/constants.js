@@ -27,10 +27,14 @@ export const INDIVIDUALS_LIST_TAB_VALUE = 'IndividualsListTab';
 export const INDIVIDUAL_CHANGELOG_TAB_VALUE = 'IndividualChangelogTab';
 export const INDIVIDUAL_TASK_TAB_VALUE = 'IndividualTaskTab';
 export const GROUP_CHANGELOG_TAB_VALUE = 'GroupChangelogTab';
+export const GROUP_INDIVIDUAL_HISTORY_TAB_VALUE = 'GroupIndividualHistoryTab';
 export const GROUP_TASK_TAB_VALUE = 'GroupTaskTab';
 export const BENEFITS_TAB_VALUE = 'BenefitTaskTab';
 export const INDIVIDUAL_TABS_LABEL_CONTRIBUTION_KEY = 'individual.TabPanel.label';
 export const INDIVIDUAL_TABS_PANEL_CONTRIBUTION_KEY = 'individual.TabPanel.panel';
+
+export const GROUPS_TABS_LABEL_CONTRIBUTION_KEY = 'group.TabPanel.label';
+export const GROUPS_TABS_PANEL_CONTRIBUTION_KEY = 'group.TabPanel.panel';
 
 export const BENEFIT_PLAN_TABS_LABEL_CONTRIBUTION_KEY = 'individual.BenefitPlansListTabLabel';
 export const BENEFIT_PLAN_TABS_PANEL_CONTRIBUTION_KEY = 'individual.BenefitPlansListTabPanel';

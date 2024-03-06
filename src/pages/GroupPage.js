@@ -20,8 +20,8 @@ import {
   fetchGroup, deleteGroup, updateGroup, clearGroup, createGroupAndMoveIndividual,
 } from '../actions';
 import GroupHeadPanel from '../components/GroupHeadPanel';
-import IndividualTabPanel from '../components/IndividualTabPanel';
 import { ACTION_TYPE } from '../reducer';
+import GroupTabPanel from '../components/GroupTabPanel';
 
 const styles = (theme) => ({
   page: theme.page,
@@ -168,7 +168,7 @@ function GroupPage({
         canSave={canSave}
         save={groupUuid ? handleSave : null}
         HeadPanel={GroupHeadPanel}
-        Panels={[IndividualTabPanel]}
+        Panels={[GroupTabPanel]}
         rights={rights}
         actions={actions}
         setConfirmedAction={setConfirmedAction}

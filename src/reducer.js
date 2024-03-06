@@ -39,6 +39,7 @@ export const ACTION_TYPE = {
   ENROLLMENT_SUMMARY: 'ENROLLMENT_SUMMARY',
   CONFIRM_ENROLLMENT: 'CONFIRM_ENROLLMENT',
   GET_INDIVIDUAL_UPLOAD_HISTORY: 'GET_INDIVIDUAL_UPLOAD_HISTORY',
+  SEARCH_GROUP_INDIVIDUAL_HISTORY: 'SEARCH_GROUP_INDIVIDUAL_HISTORY',
 };
 
 function reducer(
@@ -114,6 +115,13 @@ function reducer(
     individualDataUploadHistory: [],
     individualDataUploadHistoryPageInfo: {},
     errorIndividualDataUploadHistory: null,
+
+    fetchingGroupIndividualHistory: false,
+    errorGroupIndividualHistory: null,
+    fetchedGroupIndividualHistory: false,
+    groupIndividualHistory: [],
+    groupIndividualHistoryPageInfo: {},
+    groupIndividualHistoryTotalCount: 0,
   },
   action,
 ) {
@@ -532,6 +540,37 @@ function reducer(
         ...state,
         fetchingIndividualDataUploadHistory: false,
         errorIndividualDataUploadHistory: formatServerError(action.payload),
+      };
+    case REQUEST(ACTION_TYPE.SEARCH_GROUP_INDIVIDUAL_HISTORY):
+      return {
+        ...state,
+        fetchingGroupIndividualHistory: true,
+        fetchedGroupIndividualHistory: false,
+        groupIndividualHistory: null,
+        groupIndividualHistoryPageInfo: {},
+        groupIndividualHistoryTotalCount: 0,
+        errorGroupIndividualHistory: null,
+      };
+    case SUCCESS(ACTION_TYPE.SEARCH_GROUP_INDIVIDUAL_HISTORY):
+      return {
+        ...state,
+        fetchingGroupIndividualHistory: false,
+        fetchedGroupIndividualHistory: true,
+        // eslint-disable-next-line max-len
+        groupIndividualHistory: parseData(action.payload.data.groupIndividualHistory)?.map((groupIndividualHistory) => ({
+          ...groupIndividualHistory,
+          id: decodeId(groupIndividualHistory.id),
+        })),
+        // eslint-disable-next-line max-len
+        groupIndividualHistoryTotalCount: action.payload.data.groupIndividualHistory ? action.payload.data.groupIndividualHistory.totalCount : null,
+        groupIndividualHistoryPageInfo: pageInfo(action.payload.data.groupIndividualHistoryPageInfo),
+        errorGroupIndividualHistory: formatGraphQLError(action.payload),
+      };
+    case ERROR(ACTION_TYPE.SEARCH_GROUP_INDIVIDUAL_HISTORY):
+      return {
+        ...state,
+        fetchingGroupIndividualHistory: false,
+        errorGroupIndividualHistory: formatServerError(action.payload),
       };
     case REQUEST(ACTION_TYPE.MUTATION):
       return dispatchMutationReq(state, action);

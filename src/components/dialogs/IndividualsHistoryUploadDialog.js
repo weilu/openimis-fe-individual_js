@@ -226,7 +226,7 @@ function IndividualsUploadHistoryDialog({
                           {formatMessage(
                             intl,
                             'individual',
-                            'individual.upload.uploadHistoryTable.uploadHistoryTable.downloadUploadFile',
+                            'individual.upload.uploadHistoryTable.downloadUploadFile',
                           )}
                         </Button>
                       </TableCell>

@@ -9,6 +9,7 @@ import {
 } from '@openimis/fe-core';
 import { injectIntl } from 'react-intl';
 import { withTheme, withStyles } from '@material-ui/core/styles';
+import AdditionalFieldsDialog from './dialogs/AdditionalFieldsDialog';
 
 const styles = (theme) => ({
   tableTitle: theme.table.title,
@@ -81,6 +82,11 @@ class IndividualHeadPanel extends FormPanel {
               onChange={(v) => this.updateAttribute('dob', v)}
               value={individual?.dob}
               maxDate={currentDate}
+            />
+          </Grid>
+          <Grid item xs={3} className={classes.item}>
+            <AdditionalFieldsDialog
+              individualJsonExt={individual?.jsonExt}
             />
           </Grid>
         </Grid>

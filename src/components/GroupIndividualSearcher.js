@@ -22,7 +22,8 @@ import EditIcon from '@material-ui/icons/Edit';
 import GroupIcon from '@material-ui/icons/Group';
 import DeleteIcon from '@material-ui/icons/Delete';
 import {
-  clearGroupIndividualExport, clearGroupIndividuals,
+  clearGroupIndividualExport,
+  clearGroupIndividuals,
   deleteGroupIndividual,
   downloadGroupIndividuals,
   fetchGroupIndividuals,
@@ -30,7 +31,8 @@ import {
 } from '../actions';
 import {
   DEFAULT_PAGE_SIZE,
-  EMPTY_STRING, GROUP_INDIVIDUAL_ROLES,
+  EMPTY_STRING,
+  GROUP_INDIVIDUAL_ROLES,
   RIGHT_GROUP_INDIVIDUAL_DELETE,
   RIGHT_GROUP_INDIVIDUAL_UPDATE,
   ROWS_PER_PAGE_OPTIONS,
@@ -126,7 +128,7 @@ function GroupIndividualSearcher({
 
   useEffect(() => () => (editedGroupIndividual ? clearGroupIndividuals() : null), [groupId]);
 
-  const fetch = (params) => (groupId ? fetchGroupIndividuals(params) : null);
+  const fetch = (params) => fetchGroupIndividuals(params);
 
   const headers = () => {
     const headers = [
@@ -282,21 +284,16 @@ function GroupIndividualSearcher({
     }
   }, [groupIndividualExport]);
 
-  const defaultFilters = () => {
-    const filters = {
-      isDeleted: {
-        value: false,
-        filter: 'isDeleted: false',
-      },
-    };
-    if (groupId !== null && groupId !== undefined) {
-      filters.groupId = {
-        value: groupId,
-        filter: `group_Id: "${groupId}"`,
-      };
-    }
-    return filters;
-  };
+  const defaultFilters = () => ({
+    isDeleted: {
+      value: false,
+      filter: 'isDeleted: false',
+    },
+    group_Id: {
+      value: groupId,
+      filter: `group_Id: "${groupId}"`,
+    },
+  });
 
   const groupBeneficiaryFilter = (props) => (
     <GroupIndividualFilter

@@ -93,6 +93,7 @@ function IndividualsUploadHistoryDialog({
             transform: 'translate(-50%,-50%)',
             width: '85%',
             maxWidth: '85%',
+            maxHeight: '75%',
           },
         }}
       >

@@ -16,7 +16,7 @@ import {
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import {
-  Button, Dialog, DialogActions, DialogTitle, IconButton, Tooltip,
+  Button, Dialog, DialogActions, DialogTitle, IconButton, Tooltip, DialogContent,
 } from '@material-ui/core';
 import EditIcon from '@material-ui/icons/Edit';
 import GroupIcon from '@material-ui/icons/Group';
@@ -269,7 +269,9 @@ function GroupIndividualSearcher({
   const [failedExport, setFailedExport] = useState(false);
 
   useEffect(() => {
-    setFailedExport(true);
+    if (errorGroupIndividualExport) {
+      setFailedExport(true);
+    }
   }, [errorGroupIndividualExport]);
 
   useEffect(() => {
@@ -280,6 +282,8 @@ function GroupIndividualSearcher({
       )();
       clearGroupIndividualExport();
     }
+
+    return setFailedExport(false);
   }, [groupIndividualExport]);
 
   const defaultFilters = () => {
@@ -362,10 +366,14 @@ function GroupIndividualSearcher({
         cacheFiltersKey="groupIndividualsFilterCache"
       />
       {failedExport && (
-        <Dialog fullWidth maxWidth="sm">
-          <DialogTitle>{errorGroupIndividualExport}</DialogTitle>
+        <Dialog open={failedExport} fullWidth maxWidth="sm">
+          <DialogTitle>{errorGroupIndividualExport?.message}</DialogTitle>
+          <DialogContent>
+            <strong>{`${errorGroupIndividualExport?.code}: `}</strong>
+            {errorGroupIndividualExport?.detail}
+          </DialogContent>
           <DialogActions>
-            <Button onClick={setFailedExport(false)} variant="contained">
+            <Button onClick={() => setFailedExport(false)} color="primary" variant="contained">
               {formatMessage(intl, 'individual', 'ok')}
             </Button>
           </DialogActions>

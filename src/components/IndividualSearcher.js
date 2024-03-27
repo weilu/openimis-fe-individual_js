@@ -22,6 +22,7 @@ import {
   Dialog,
   DialogActions,
   DialogTitle,
+  DialogContent,
 } from '@material-ui/core';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
@@ -217,7 +218,9 @@ function IndividualSearcher({
   const [failedExport, setFailedExport] = useState(false);
 
   useEffect(() => {
-    setFailedExport(true);
+    if (errorIndividualExport) {
+      setFailedExport(true);
+    }
   }, [errorIndividualExport]);
 
   useEffect(() => {
@@ -225,6 +228,8 @@ function IndividualSearcher({
       downloadExport(individualExport, `${formatMessage(intl, 'individual', 'export.filename.individuals')}.csv`)();
       clearIndividualExport();
     }
+
+    return setFailedExport(false);
   }, [individualExport]);
 
   const defaultFilters = () => {
@@ -305,10 +310,14 @@ function IndividualSearcher({
         } : { isCustomFiltering: false })}
       />
       {failedExport && (
-        <Dialog fullWidth maxWidth="sm">
-          <DialogTitle>{errorIndividualExport}</DialogTitle>
+        <Dialog open={failedExport} fullWidth maxWidth="sm">
+          <DialogTitle>{errorIndividualExport?.message}</DialogTitle>
+          <DialogContent>
+            <strong>{`${errorIndividualExport?.code}: `}</strong>
+            {errorIndividualExport?.detail}
+          </DialogContent>
           <DialogActions>
-            <Button onClick={setFailedExport(false)} variant="contained">
+            <Button onClick={() => setFailedExport(false)} color="primary" variant="contained">
               {formatMessage(intl, 'individual', 'ok')}
             </Button>
           </DialogActions>

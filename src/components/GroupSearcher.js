@@ -19,6 +19,7 @@ import {
   Dialog,
   DialogActions,
   DialogTitle,
+  DialogContent,
 } from '@material-ui/core';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
@@ -174,7 +175,9 @@ function GroupSearcher({
   const [failedExport, setFailedExport] = useState(false);
 
   useEffect(() => {
-    setFailedExport(true);
+    if (errorGroupExport) {
+      setFailedExport(true);
+    }
   }, [errorGroupExport]);
 
   useEffect(() => {
@@ -182,6 +185,8 @@ function GroupSearcher({
       downloadExport(groupExport, `${formatMessage(intl, 'individual', 'export.filename.groups')}.csv`)();
       clearGroupExport();
     }
+
+    return setFailedExport(false);
   }, [groupExport]);
 
   const groupFilter = (props) => (
@@ -241,10 +246,14 @@ function GroupSearcher({
         rowLocked={isRowDisabled}
       />
       {failedExport && (
-        <Dialog fullWidth maxWidth="sm">
-          <DialogTitle>{errorGroupExport}</DialogTitle>
+        <Dialog open={failedExport} fullWidth maxWidth="sm">
+          <DialogTitle>{errorGroupExport?.message}</DialogTitle>
+          <DialogContent>
+            <strong>{`${errorGroupExport?.code}: `}</strong>
+            {errorGroupExport?.detail}
+          </DialogContent>
           <DialogActions>
-            <Button onClick={setFailedExport(false)} variant="contained">
+            <Button onClick={() => setFailedExport(false)} color="primary" variant="contained">
               {formatMessage(intl, 'individual', 'ok')}
             </Button>
           </DialogActions>

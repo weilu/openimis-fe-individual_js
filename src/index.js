@@ -53,6 +53,11 @@ import {
 } from './components/GroupIndividualHistoryTab';
 import AdvancedCriteriaRowValue from './components/dialogs/AdvancedCriteriaRowValue';
 import IndividualPicker from './pickers/IndividualPicker';
+import {
+  GroupUploadConfirmationPanel,
+  GroupUploadResolutionItemFormatters,
+  GroupUploadResolutionTaskTableHeaders
+} from "./components/tasks/GroupImportTasks";
 import EnrollmentGroupPage from './pages/EnrollmentGroupPage';
 import GroupMenu from './components/dialogs/GroupMenu';
 
@@ -161,6 +166,13 @@ const DEFAULT_CONFIG = {
     itemFormatters: GroupCreateTaskItemFormatters,
     taskSource: ['CreateGroupAndMoveIndividualService'],
     taskCode: GROUP_LABEL,
+  },
+  {
+    text: <FormattedMessage module={INDIVIDUAL_MODULE_NAME} id="validation_import_group_valid_items.tasks.title" />,
+    tableHeaders: GroupUploadResolutionTaskTableHeaders,
+    itemFormatters: GroupUploadResolutionItemFormatters,
+    taskSource: ['import_group_valid_items'],
+    confirmationPanel: GroupUploadConfirmationPanel,
   },
   ],
 };

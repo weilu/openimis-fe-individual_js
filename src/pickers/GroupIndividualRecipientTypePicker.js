@@ -1,18 +1,19 @@
 import React from 'react';
 import { ConstantBasedPicker } from '@openimis/fe-core';
 import {
-  GROUP_INDIVIDUAL_ROLES_LIST,
+  RECIPIENT_TYPE_LIST,
 } from '../constants';
 
-function GroupIndividualRolePicker(props) {
+function GroupIndividualRecipientTypePicker(props) {
   const {
     required, readOnly, onChange, value, nullLabel, withLabel,
   } = props;
+  console.log(value)
   return (
     <ConstantBasedPicker
       module="individual"
-      label="groupIndividual.groupIndividualRolePicker"
-      constants={GROUP_INDIVIDUAL_ROLES_LIST}
+      label="groupIndividual.groupIndividualRecipientTypePicker"
+      constants={RECIPIENT_TYPE_LIST}
       onChange={onChange}
       value={value}
       required={required}
@@ -24,4 +25,4 @@ function GroupIndividualRolePicker(props) {
   );
 }
 
-export default GroupIndividualRolePicker;
+export default GroupIndividualRecipientTypePicker;

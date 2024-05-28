@@ -43,6 +43,8 @@ export const ACTION_TYPE = {
   SEARCH_GROUP_INDIVIDUAL_HISTORY: 'SEARCH_GROUP_INDIVIDUAL_HISTORY',
   ENROLLMENT_GROUP_SUMMARY: 'ENROLLMENT_GROUP_SUMMARY',
   CONFIRM_GROUP_ENROLLMENT: 'CONFIRM_GROUP_ENROLLMENT',
+  GET_PENDING_GROUPS_UPLOAD: 'GET_PENDING_GROUPS_UPLOAD',
+  RESOLVE_TASK: 'TASK_MANAGEMENT_RESOLVE_TASK',
 };
 
 function reducer(
@@ -130,6 +132,12 @@ function reducer(
     enrollmentGroupSummaryError: null,
     fetchingEnrollmentGroupSummary: true,
     fetchedEnrollmentGroupSummary: false,
+
+    pendingGroups: [],
+    fetchingPendingGroups: true,
+    fetchedPendingGroups: false,
+    errorPendingGroups: null,
+    pendingGroupsPageInfo: {},
   },
   action,
 ) {
@@ -199,6 +207,26 @@ function reducer(
         groupHistoryPageInfo: {},
         groupHistoryTotalCount: 0,
         errorGroupHistory: null,
+      };
+    case REQUEST(ACTION_TYPE.GET_PENDING_GROUPS_UPLOAD):
+      return {
+        ...state,
+        pendingGroups: [],
+        fetchingPendingGroups: true,
+        fetchedPendingGroups: false,
+        errorPendingGroups: null,
+      };
+    case SUCCESS(ACTION_TYPE.GET_PENDING_GROUPS_UPLOAD):
+      return {
+        ...state,
+        pendingGroups: parseData(action.payload.data.groupDataSource)?.map((i) => ({
+          ...i,
+          id: decodeId(i.id),
+        })),
+        pendingGroupPageInfo: pageInfo(action.payload.data.groupDataSource),
+        fetchingPendingGroups: false,
+        fetchedPendingGroups: true,
+        errorPendingGroups: formatGraphQLError(action.payload),
       };
     case SUCCESS(ACTION_TYPE.SEARCH_INDIVIDUALS):
       return {
@@ -311,6 +339,12 @@ function reducer(
         ...state,
         fetchingIndividuals: false,
         errorIndividuals: formatServerError(action.payload),
+      };
+    case ERROR(ACTION_TYPE.GET_PENDING_GROUPS_UPLOAD):
+      return {
+        ...state,
+        fetchingPendingGroups: false,
+        errorFieldsFromBfSchema: formatGraphQLError(action.payload),
       };
     case ERROR(ACTION_TYPE.SEARCH_INDIVIDUAL_HISTORY):
       return {
@@ -622,6 +656,8 @@ function reducer(
       return dispatchMutationResp(state, 'updateGroup', action);
     case SUCCESS(ACTION_TYPE.CREATE_GROUP_AND_MOVE_INDIVIDUAL):
       return dispatchMutationResp(state, 'createGroupAndMoveIndividual', action);
+    case SUCCESS(ACTION_TYPE.RESOLVE_TASK):
+      return dispatchMutationResp(state, 'resolveTask', action);
     default:
       return state;
   }

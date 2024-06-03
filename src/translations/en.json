@@ -21,6 +21,7 @@
     "lastName": "Last Name",
     "dob": "Day of birth",
     "isDeleted": "Show Deleted",
+    "addButtonTooltip": "Add Individual to Group",
     "additonalFields": {
         "label": "Additional Fields",
         "showAdditionalFields": "Show Additional Fields",
@@ -268,6 +269,7 @@
   "groupChangeDialog": {
     "confirmTitle": "Move {firstName} {lastName} to a different group."
   },
+  "addToNewGroup": "Add individual to this group",
   "confirm": "Confirm",
   "cancel": "Cancel",
   "changeGroupButtonTooltip": "Move to another group.",

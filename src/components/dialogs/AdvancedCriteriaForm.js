@@ -17,7 +17,7 @@ import { bindActionCreators } from 'redux';
 import AddCircle from '@material-ui/icons/Add';
 import Typography from '@material-ui/core/Typography';
 import AdvancedCriteriaRowValue from './AdvancedCriteriaRowValue';
-import { CLEARED_STATE_FILTER, INDIVIDUAL } from '../../constants';
+import { CLEARED_STATE_FILTER, INDIVIDUAL, BENEFICIARY_STATUS } from '../../constants';
 import { isBase64Encoded, isEmptyObject } from '../../utils';
 import { confirmEnrollment, fetchIndividualEnrollmentSummary } from '../../actions';
 import IndividualPreviewEnrollmentDialog from './IndividualPreviewEnrollmentDialog';
@@ -58,20 +58,31 @@ function AdvancedCriteriaForm({
   });
   const [filters, setFilters] = useState(getDefaultAppliedCustomFilters());
   const [filtersToApply, setFiltersToApply] = useState(null);
+  const defaultFilterStatus = Object.keys(BENEFICIARY_STATUS)[0];
+  const status = edited?.status;
 
   const getBenefitPlanDefaultCriteria = () => {
-    const { jsonExt } = edited?.benefitPlan ?? {};
-    try {
-      const jsonData = JSON.parse(jsonExt);
-      return jsonData.advanced_criteria || [];
-    } catch (error) {
-      return [];
+    const jsonExt = edited?.benefitPlan?.jsonExt ?? '{}';
+    const jsonData = JSON.parse(jsonExt);
+
+    // Note: advanced_criteria is migrated from [filters] to {status: filters}
+    // For backward compatibility POTENTIAL status take on the old filters
+    let criteria = jsonData?.advanced_criteria || [];
+    if (status in criteria) {
+      criteria = criteria[status];
+    } else if (status !== defaultFilterStatus) {
+      criteria = [];
     }
+
+    return criteria;
   };
 
   useEffect(() => {
-    if (!getDefaultAppliedCustomFilters().length) {
+    const defaultAppliedCustomFilters = getDefaultAppliedCustomFilters();
+    if (!defaultAppliedCustomFilters.length) {
       setFilters(getBenefitPlanDefaultCriteria());
+    } else {
+      setFilters(defaultAppliedCustomFilters);
     }
   }, [edited]);
 
@@ -104,12 +115,12 @@ function AdvancedCriteriaForm({
 
   function updateJsonExt(inputJsonExt, outputFilters) {
     const existingData = JSON.parse(inputJsonExt || '{}');
-    // eslint-disable-next-line no-prototype-builtins
-    if (!existingData.hasOwnProperty('advanced_criteria')) {
-      existingData.advanced_criteria = [];
-    }
     const filterData = JSON.parse(outputFilters);
-    existingData.advanced_criteria = filterData;
+
+    const advancedCriteria = existingData?.advanced_criteria || {};
+    const updatedAdvancedCriteria = { ...advancedCriteria, [status]: filterData };
+    existingData.advanced_criteria = updatedAdvancedCriteria;
+
     const updatedJsonExt = JSON.stringify(existingData);
     return updatedJsonExt;
   }
@@ -135,7 +146,7 @@ function AdvancedCriteriaForm({
 
     // Parse the jsonExt string to extract advanced_criteria
     const jsonData = JSON.parse(jsonExt);
-    const advancedCriteria = jsonData.advanced_criteria || [];
+    const advancedCriteria = jsonData.advanced_criteria?.[status] || [];
 
     // Extract custom_filter_condition values and construct customFilters array
     const customFilters = advancedCriteria.map((criterion) => `"${criterion.custom_filter_condition}"`);
@@ -189,7 +200,7 @@ function AdvancedCriteriaForm({
       );
       const jsonExt = updateJsonExt(objectToSave.jsonExt, outputFilters);
       const jsonData = JSON.parse(jsonExt);
-      const advancedCriteria = jsonData.advanced_criteria || [];
+      const advancedCriteria = jsonData.advanced_criteria?.[status] || [];
 
       // Extract custom_filter_condition values and construct customFilters array
       const customFilters = advancedCriteria.map((criterion) => `"${criterion.custom_filter_condition}"`);
@@ -197,7 +208,7 @@ function AdvancedCriteriaForm({
       const params = {
         customFilters: `[${customFilters}]`,
         benefitPlanId: `"${decodeId(object.id)}"`,
-        status: `"${objectToSave.status}"`,
+        status: `"${status}"`,
       };
       confirmEnrollment(
         params,

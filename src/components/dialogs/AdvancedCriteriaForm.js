@@ -17,7 +17,11 @@ import { bindActionCreators } from 'redux';
 import AddCircle from '@material-ui/icons/Add';
 import Typography from '@material-ui/core/Typography';
 import AdvancedCriteriaRowValue from './AdvancedCriteriaRowValue';
-import { CLEARED_STATE_FILTER, INDIVIDUAL, BENEFICIARY_STATUS } from '../../constants';
+import {
+  CLEARED_STATE_FILTER,
+  INDIVIDUAL,
+  DEFAULT_BENEFICIARY_STATUS,
+} from '../../constants';
 import { isBase64Encoded, isEmptyObject } from '../../utils';
 import { confirmEnrollment, fetchIndividualEnrollmentSummary } from '../../actions';
 import IndividualPreviewEnrollmentDialog from './IndividualPreviewEnrollmentDialog';
@@ -58,7 +62,6 @@ function AdvancedCriteriaForm({
   });
   const [filters, setFilters] = useState(getDefaultAppliedCustomFilters());
   const [filtersToApply, setFiltersToApply] = useState(null);
-  const defaultFilterStatus = Object.keys(BENEFICIARY_STATUS)[0];
   const status = edited?.status;
 
   const getBenefitPlanDefaultCriteria = () => {
@@ -66,15 +69,13 @@ function AdvancedCriteriaForm({
     const jsonData = JSON.parse(jsonExt);
 
     // Note: advanced_criteria is migrated from [filters] to {status: filters}
-    // For backward compatibility POTENTIAL status take on the old filters
-    let criteria = jsonData?.advanced_criteria || [];
-    if (status in criteria) {
-      criteria = criteria[status];
-    } else if (status !== defaultFilterStatus) {
-      criteria = [];
+    // For backward compatibility default status take on the old filters
+    let criteria = jsonData?.advanced_criteria || {};
+    if (Array.isArray(criteria)) {
+      criteria = { [DEFAULT_BENEFICIARY_STATUS]: criteria };
     }
 
-    return criteria;
+    return criteria[status] || [];
   };
 
   useEffect(() => {

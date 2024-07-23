@@ -40,24 +40,22 @@ class EnrollmentGroupHeadPanel extends FormPanel {
   };
 
   getDefaultAppliedCustomFilters = () => {
-    const { jsonExt } = this.props?.edited ?? {};
-    try {
-      const jsonData = JSON.parse(jsonExt);
-      const advancedCriteria = jsonData.advanced_criteria || [];
-      return advancedCriteria.map(({ custom_filter_condition }) => {
-        const [field, filter, typeValue] = custom_filter_condition.split('__');
-        const [type, value] = typeValue.split('=');
-        return {
-          custom_filter_condition,
-          field,
-          filter,
-          type,
-          value,
-        };
-      });
-    } catch (error) {
-      return [];
-    }
+    const benefitPlan = this.props?.edited;
+    const jsonExt = benefitPlan?.jsonExt ?? '{}';
+    const status = benefitPlan?.status;
+    const jsonData = JSON.parse(jsonExt);
+    const filters = jsonData.advanced_criteria?.[status] || [];
+    return filters.map(({ custom_filter_condition }) => {
+      const [field, filter, typeValue] = custom_filter_condition.split('__');
+      const [type, value] = typeValue.split('=');
+      return {
+        custom_filter_condition,
+        field,
+        filter,
+        type,
+        value,
+      };
+    });
   };
 
   setAppliedCustomFilters = (appliedCustomFilters) => {
@@ -71,7 +69,6 @@ class EnrollmentGroupHeadPanel extends FormPanel {
   render() {
     // eslint-disable-next-line no-unused-vars
     const { edited, classes, intl } = this.props;
-    const enrollment = { ...edited };
     const { appliedCustomFilters, appliedFiltersRowStructure } = this.state;
     return (
       <>
@@ -83,7 +80,7 @@ class EnrollmentGroupHeadPanel extends FormPanel {
               required
               filterLabels={false}
               onChange={(benefitPlan) => this.updateAttribute('benefitPlan', benefitPlan)}
-              value={enrollment?.benefitPlan}
+              value={edited?.benefitPlan}
               type="GROUP"
             />
           </Grid>
@@ -94,7 +91,7 @@ class EnrollmentGroupHeadPanel extends FormPanel {
               withNull={false}
               filterLabels={false}
               onChange={(status) => this.updateAttribute('status', status)}
-              value={enrollment?.status}
+              value={edited?.status}
             />
           </Grid>
         </Grid>
@@ -107,8 +104,8 @@ class EnrollmentGroupHeadPanel extends FormPanel {
             <Divider />
             <Grid container className={classes.item}>
               <AdvancedCriteriaGroupForm
-                object={enrollment.benefitPlan}
-                objectToSave={enrollment}
+                object={edited.benefitPlan}
+                objectToSave={edited}
                 moduleName="individual"
                 objectType="Individual"
                 setAppliedCustomFilters={this.setAppliedCustomFilters}
@@ -117,8 +114,8 @@ class EnrollmentGroupHeadPanel extends FormPanel {
                 setAppliedFiltersRowStructure={this.setAppliedFiltersRowStructure}
                 updateAttributes={this.updateJsonExt}
                 getDefaultAppliedCustomFilters={this.getDefaultAppliedCustomFilters}
-                additionalParams={enrollment?.benefitPlan ? { benefitPlan: `${decodeId(enrollment.benefitPlan.id)}` } : null}
-                edited={this.props.edited}
+                additionalParams={edited?.benefitPlan ? { benefitPlan: `${decodeId(edited.benefitPlan.id)}` } : null}
+                edited={edited}
               />
             </Grid>
           </>

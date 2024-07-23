@@ -14,6 +14,7 @@ import {
   journalize,
 } from '@openimis/fe-core';
 import EnrollmentGroupHeadPanel from '../components/EnrollmentGroupHeadPanel';
+import { DEFAULT_BENEFICIARY_STATUS } from '../constants';
 
 const useStyles = makeStyles((theme) => ({
   page: theme.page,
@@ -27,7 +28,9 @@ function EnrollmentGroupPage({
   const history = useHistory();
   const { formatMessage } = useTranslations('individual', modulesManager);
 
-  const [editedEnrollment, setEditedEnrollment] = useState({ status: 'ACTIVE' });
+  const [editedEnrollment, setEditedEnrollment] = useState({
+    status: DEFAULT_BENEFICIARY_STATUS,
+  });
 
   const back = () => history.goBack();
 

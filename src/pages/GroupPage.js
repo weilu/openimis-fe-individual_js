@@ -33,6 +33,7 @@ const styles = (theme) => ({
 
 function GroupPage({
   intl,
+  modulesManager,
   classes,
   rights,
   history,
@@ -63,7 +64,7 @@ function GroupPage({
 
   useEffect(() => {
     if (groupUuid) {
-      fetchGroup([`id: "${groupUuid}"`]);
+      fetchGroup(modulesManager, [`id: "${groupUuid}"`]);
     }
     return () => {
       clearGroup();
@@ -190,7 +191,7 @@ function GroupPage({
 
   return (
     rights.includes(RIGHT_GROUP_SEARCH) && (
-    <div className={readOnly && !groupUuid ? classes.lockedPage : classes.page}>
+    <div className={readOnly ? classes.lockedPage : classes.page}>
       <IndividualAddToGroupDialog
         confirmState={isAddIndividualToGroupModalOpen}
         onClose={() => setIsAddIndividualToGroupModalOpen(false)}
@@ -219,7 +220,7 @@ function GroupPage({
         add={canAdd() ? handleSave : null}
         setEditedGroupIndividual={setEditedGroupIndividual}
         editedGroupIndividual={editedGroupIndividual}
-        readOnly={!!groupUuid}
+        readOnly={readOnly}
         groupIndividualIds={groupIndividualIds}
         groupId={groupUuid}
       />

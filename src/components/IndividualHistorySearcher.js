@@ -26,7 +26,7 @@ function IndividualHistorySearcher({
   individualHistoryTotalCount,
   individualId,
 }) {
-  const fetch = (params) => fetchIndividualHistory(params);
+  const fetch = (params) => fetchIndividualHistory(modulesManager, params);
 
   const headers = () => [
     'individualHistory.firstName',

@@ -25,7 +25,7 @@ function GroupHistorySearcher({
   const groupHistory = useSelector((state) => state.individual.groupHistory);
   const groupHistoryPageInfo = useSelector((state) => state.individual.groupHistoryPageInfo);
   const groupHistoryTotalCount = useSelector((state) => state.individual.groupHistoryTotalCount);
-  const fetch = (params) => dispatch(fetchGroupHistory(params));
+  const fetch = (params) => dispatch(fetchGroupHistory(modulesManager, params));
 
   const headers = () => [
     'groupHistory.primaryRecipient',

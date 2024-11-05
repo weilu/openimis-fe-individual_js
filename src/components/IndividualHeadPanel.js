@@ -89,6 +89,17 @@ class IndividualHeadPanel extends FormPanel {
               individualJsonExt={individual?.jsonExt}
             />
           </Grid>
+          <Grid item xs={12}>
+            <PublishedComponent
+              pubRef="location.DetailedLocation"
+              withNull
+              readOnly // TODO: readonly if belong to group
+              required={false}
+              value={!edited ? null : edited.location}
+              onChange={(v) => this.updateAttribute('location', v)}
+              filterLabels={false}
+            />
+          </Grid>
         </Grid>
       </>
     );

@@ -1,6 +1,10 @@
 import React from 'react';
 import { injectIntl } from 'react-intl';
-import { TextInput } from '@openimis/fe-core';
+import {
+  ControlledField,
+  PublishedComponent,
+  TextInput,
+} from '@openimis/fe-core';
 import { Grid } from '@material-ui/core';
 import { withTheme, withStyles } from '@material-ui/core/styles';
 import _debounce from 'lodash/debounce';
@@ -50,6 +54,21 @@ function GroupFilter({
           onChange={onChangeStringFilter('lastName')}
         />
       </Grid>
+      <ControlledField
+        module="individual"
+        id="GroupFilter.location"
+        field={(
+          <Grid item xs={12}>
+            <PublishedComponent
+              pubRef="location.DetailedLocationFilter"
+              withNull
+              filters={filters}
+              onChangeFilters={onChangeFilters}
+              anchor="parentLocation"
+            />
+          </Grid>
+        )}
+      />
     </Grid>
   );
 }

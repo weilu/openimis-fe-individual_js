@@ -48,7 +48,7 @@ export function fetchWorkflows() {
   return graphql(payload, ACTION_TYPE.GET_WORKFLOWS);
 }
 
-const INDIVIDUAL_FULL_PROJECTION = [
+const INDIVIDUAL_FULL_PROJECTION = (mm) => [
   'id',
   'isDeleted',
   'dateCreated',
@@ -59,6 +59,7 @@ const INDIVIDUAL_FULL_PROJECTION = [
   'jsonExt',
   'version',
   'userUpdated {username}',
+  `location${mm.getProjection('location.Location.FlatProjection')}`,
 ];
 
 const GROUP_INDIVIDUAL_FULL_PROJECTION = [
@@ -73,7 +74,7 @@ const GROUP_INDIVIDUAL_FULL_PROJECTION = [
   'jsonExt',
 ];
 
-const GROUP_FULL_PROJECTION = [
+const GROUP_FULL_PROJECTION = (mm) => [
   'id',
   'code',
   'isDeleted',
@@ -83,6 +84,7 @@ const GROUP_FULL_PROJECTION = [
   'jsonExt',
   'version',
   'userUpdated {username}',
+  `location${mm.getProjection('location.Location.FlatProjection')}`,
 ];
 
 const GROUP_INDIVIDUAL_HISTORY_FULL_PROJECTION = [
@@ -98,7 +100,7 @@ const GROUP_INDIVIDUAL_HISTORY_FULL_PROJECTION = [
   'version',
 ];
 
-const GROUP_HISTORY_FULL_PROJECTION = GROUP_FULL_PROJECTION.filter(
+const GROUP_HISTORY_FULL_PROJECTION = (mm) => GROUP_FULL_PROJECTION(mm).filter(
   (item) => item !== 'head {firstName, lastName}',
 );
 
@@ -144,8 +146,8 @@ export function fetchGroupEnrollmentSummary(params) {
   return graphql(payload, ACTION_TYPE.ENROLLMENT_GROUP_SUMMARY);
 }
 
-export function fetchIndividuals(params) {
-  const payload = formatPageQueryWithCount('individual', params, INDIVIDUAL_FULL_PROJECTION);
+export function fetchIndividuals(mm, params) {
+  const payload = formatPageQueryWithCount('individual', params, INDIVIDUAL_FULL_PROJECTION(mm));
   return graphql(payload, ACTION_TYPE.SEARCH_INDIVIDUALS);
 }
 
@@ -154,28 +156,28 @@ export function fetchGroupIndividuals(params) {
   return graphql(payload, ACTION_TYPE.SEARCH_GROUP_INDIVIDUALS);
 }
 
-export function fetchGroups(params) {
-  const payload = formatPageQueryWithCount('group', params, GROUP_FULL_PROJECTION);
+export function fetchGroups(mm, params) {
+  const payload = formatPageQueryWithCount('group', params, GROUP_FULL_PROJECTION(mm));
   return graphql(payload, ACTION_TYPE.SEARCH_GROUPS);
 }
 
-export function fetchIndividual(params) {
-  const payload = formatPageQuery('individual', params, INDIVIDUAL_FULL_PROJECTION);
+export function fetchIndividual(mm, params) {
+  const payload = formatPageQuery('individual', params, INDIVIDUAL_FULL_PROJECTION(mm));
   return graphql(payload, ACTION_TYPE.GET_INDIVIDUAL);
 }
 
-export function fetchIndividualHistory(params) {
-  const payload = formatPageQueryWithCount('individualHistory', params, INDIVIDUAL_FULL_PROJECTION);
+export function fetchIndividualHistory(mm, params) {
+  const payload = formatPageQueryWithCount('individualHistory', params, INDIVIDUAL_FULL_PROJECTION(mm));
   return graphql(payload, ACTION_TYPE.SEARCH_INDIVIDUAL_HISTORY);
 }
 
-export function fetchGroup(params) {
-  const payload = formatPageQuery('group', params, GROUP_FULL_PROJECTION);
+export function fetchGroup(mm, params) {
+  const payload = formatPageQuery('group', params, GROUP_FULL_PROJECTION(mm));
   return graphql(payload, ACTION_TYPE.GET_GROUP);
 }
 
-export function fetchGroupHistory(params) {
-  const payload = formatPageQueryWithCount('groupHistory', params, GROUP_HISTORY_FULL_PROJECTION);
+export function fetchGroupHistory(mm, params) {
+  const payload = formatPageQueryWithCount('groupHistory', params, GROUP_HISTORY_FULL_PROJECTION(mm));
   return graphql(payload, ACTION_TYPE.SEARCH_GROUP_HISTORY);
 }
 

@@ -30,6 +30,7 @@ const styles = (theme) => ({
 
 function IndividualPage({
   intl,
+  modulesManager,
   classes,
   rights,
   history,
@@ -52,7 +53,7 @@ function IndividualPage({
 
   useEffect(() => {
     if (individualUuid) {
-      fetchIndividual([`id: "${individualUuid}"`]);
+      fetchIndividual(modulesManager, [`id: "${individualUuid}"`]);
     }
   }, [individualUuid]);
 

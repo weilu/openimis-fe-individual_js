@@ -27,7 +27,7 @@ function GroupPicker(props) {
   const [filters, setFilters] = useState(['isDeleted: false']);
 
   useEffect(() => {
-    dispatch(fetchGroups(filters));
+    dispatch(fetchGroups(modulesManager, filters));
   }, [filters]);
 
   const groupLabel = (option) => option.code;

@@ -21,6 +21,7 @@
     "firstName": "First Name",
     "lastName": "Last Name",
     "dob": "Day of birth",
+    "location": "Location",
     "isDeleted": "Show Deleted",
     "hasNoLocation": "Missing Location",
     "addButtonTooltip": "Add Individual to Group",

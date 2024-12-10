@@ -1,4 +1,5 @@
 import {
+  decodeId,
   graphql,
   formatPageQuery,
   formatQuery,
@@ -262,12 +263,14 @@ function dateTimeToDate(date) {
 function formatGroupGQL(group, groupIndividualId = null) {
   return `
     ${group?.id ? `id: "${group.id}"` : ''}
+    ${group?.location ? `locationId: ${decodeId(group.location.id)}` : ''}
     ${groupIndividualId ? `groupIndividualId: "${groupIndividualId}"` : ''}`;
 }
 
 function formatCreateGroupGQL(group) {
   return `
     ${group?.code ? `code: "${group.code}"` : ''}
+    ${group?.location ? `locationId: ${decodeId(group.location.id)}` : ''}
     ${'individualsData: []'}
   `;
 }
@@ -278,7 +281,9 @@ function formatIndividualGQL(individual) {
     ${individual?.firstName ? `firstName: "${formatGQLString(individual.firstName)}"` : ''}
     ${individual?.lastName ? `lastName: "${formatGQLString(individual.lastName)}"` : ''}
     ${individual?.jsonExt ? `jsonExt: ${JSON.stringify(individual.jsonExt)}` : ''}
-    ${individual?.dob ? `dob: "${dateTimeToDate(individual.dob)}"` : ''}`;
+    ${individual?.dob ? `dob: "${dateTimeToDate(individual.dob)}"` : ''}
+    ${individual?.location ? `locationId: ${decodeId(individual.location.id)}` : ''}
+  `;
 }
 
 function formatGroupIndividualGQL(groupIndividual) {

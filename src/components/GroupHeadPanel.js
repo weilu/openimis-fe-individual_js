@@ -67,7 +67,7 @@ class GroupHeadPanel extends FormPanel {
             <PublishedComponent
               pubRef="location.DetailedLocation"
               withNull
-              readOnly // TODO: group location update
+              readOnly={readOnly}
               required={false}
               value={!edited ? null : edited.location}
               onChange={(v) => this.updateAttribute('location', v)}

@@ -93,7 +93,6 @@ class IndividualHeadPanel extends FormPanel {
             <PublishedComponent
               pubRef="location.DetailedLocation"
               withNull
-              readOnly // TODO: readonly if belong to group
               required={false}
               value={!edited ? null : edited.location}
               onChange={(v) => this.updateAttribute('location', v)}

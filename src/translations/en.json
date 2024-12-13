@@ -22,6 +22,7 @@
     "lastName": "Last Name",
     "dob": "Day of birth",
     "location": "Location",
+    "locationEditDisabledTitle": "Individual belongs to a group; Please edit location on their group",
     "isDeleted": "Show Deleted",
     "hasNoLocation": "Missing Location",
     "addButtonTooltip": "Add Individual to Group",

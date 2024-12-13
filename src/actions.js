@@ -49,19 +49,27 @@ export function fetchWorkflows() {
   return graphql(payload, ACTION_TYPE.GET_WORKFLOWS);
 }
 
-const INDIVIDUAL_FULL_PROJECTION = (mm) => [
-  'id',
-  'isDeleted',
-  'dateCreated',
-  'dateUpdated',
-  'firstName',
-  'lastName',
-  'dob',
-  'jsonExt',
-  'version',
-  'userUpdated {username}',
-  `location${mm.getProjection('location.Location.FlatProjection')}`,
-];
+const INDIVIDUAL_FULL_PROJECTION = (mm, withGroupIndividuals = false) => {
+  const fields = [
+    'id',
+    'isDeleted',
+    'dateCreated',
+    'dateUpdated',
+    'firstName',
+    'lastName',
+    'dob',
+    'jsonExt',
+    'version',
+    'userUpdated {username}',
+    `location${mm.getProjection('location.Location.FlatProjection')}`,
+  ];
+
+  if (withGroupIndividuals) {
+    fields.push('groupindividuals (isDeleted: false) { edges { node { group { id } } } }');
+  }
+
+  return fields;
+};
 
 const GROUP_INDIVIDUAL_FULL_PROJECTION = [
   'id',
@@ -163,7 +171,11 @@ export function fetchGroups(mm, params) {
 }
 
 export function fetchIndividual(mm, params) {
-  const payload = formatPageQuery('individual', params, INDIVIDUAL_FULL_PROJECTION(mm));
+  const payload = formatPageQuery(
+    'individual',
+    params,
+    INDIVIDUAL_FULL_PROJECTION(mm, true),
+  );
   return graphql(payload, ACTION_TYPE.GET_INDIVIDUAL);
 }
 

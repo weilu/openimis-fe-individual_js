@@ -31,6 +31,7 @@ function GroupHistorySearcher({
     'groupHistory.primaryRecipient',
     'groupHistory.head',
     'groupHistory.secondaryRecipient',
+    'groupHistory.location',
     'groupHistory.dateUpdated',
     'groupHistory.version',
     'groupHistory.members',
@@ -50,6 +51,9 @@ function GroupHistorySearcher({
       const jsonExt = groupHistory?.jsonExt ? JSON.parse(groupHistory.jsonExt) : null;
       return jsonExt?.secondary_recipient ?? EMPTY_STRING;
     },
+    (groupHistory) => (groupHistory.location
+      ? `${groupHistory.location.code} ${groupHistory.location.name}` : EMPTY_STRING
+    ),
     (groupHistory) => (groupHistory?.dateUpdated
       ? formatDateFromISO(groupHistory.dateUpdated)
       : EMPTY_STRING),

@@ -190,6 +190,7 @@
     "head": "Head",
     "primaryRecipient": "Primary Recipient",
     "secondaryRecipient": "Secondary Recipient",
+    "location": "Location",
     "dateUpdated": "Date Updated",
     "version": "Version",
     "any": "ANY",

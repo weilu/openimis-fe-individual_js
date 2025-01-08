@@ -41,7 +41,7 @@ function IndividualHistoryFilter({
       <Grid item xs={2} className={classes.item}>
         <TextInput
           module="individual"
-          label="individualHistory.firstName"
+          label="individual.firstName"
           value={filterTextFieldValue('firstName')}
           onChange={onChangeStringFilter('firstName', CONTAINS_LOOKUP)}
         />
@@ -49,7 +49,7 @@ function IndividualHistoryFilter({
       <Grid item xs={2} className={classes.item}>
         <TextInput
           module="individual"
-          label="individualHistory.lastName"
+          label="individual.lastName"
           value={filterTextFieldValue('lastName')}
           onChange={onChangeStringFilter('lastName', CONTAINS_LOOKUP)}
         />
@@ -58,7 +58,7 @@ function IndividualHistoryFilter({
         <PublishedComponent
           pubRef="core.DatePicker"
           module="individual"
-          label="individualHistory.dob"
+          label="individual.dob"
           value={filterValue('dob')}
           onChange={(v) => onChangeFilters([
             {

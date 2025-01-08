@@ -129,9 +129,6 @@
   "individualHistory": {
     "pageTitle": "Individual {firstName} {lastName}",
     "headPanelTitle": "General Information",
-    "firstName": "First Name",
-    "lastName": "Last Name",
-    "dob": "Day of birth",
     "dateUpdated": "Date Updated",
     "version": "Version",
     "individualsList": {

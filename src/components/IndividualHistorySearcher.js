@@ -29,9 +29,10 @@ function IndividualHistorySearcher({
   const fetch = (params) => fetchIndividualHistory(modulesManager, params);
 
   const headers = () => [
-    'individualHistory.firstName',
-    'individualHistory.lastName',
-    'individualHistory.dob',
+    'individual.firstName',
+    'individual.lastName',
+    'individual.dob',
+    'individual.location',
     'individualHistory.dateUpdated',
     'individualHistory.version',
     'individualHistory.jsonExt',
@@ -43,6 +44,9 @@ function IndividualHistorySearcher({
     (individualHistory) => individualHistory.lastName,
     (individualHistory) => (individualHistory.dob
       ? formatDateFromISO(modulesManager, intl, individualHistory.dob) : EMPTY_STRING
+    ),
+    (individualHistory) => (individualHistory.location
+      ? `${individualHistory.location.code} ${individualHistory.location.name}` : EMPTY_STRING
     ),
     (individualHistory) => (individualHistory.dateUpdated
       ? formatDateFromISO(modulesManager, intl, individualHistory.dateUpdated) : EMPTY_STRING

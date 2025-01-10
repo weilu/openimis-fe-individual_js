@@ -12,7 +12,7 @@ const IndividualTaskItemFormatters = () => [
   (individual) => individual?.first_name,
   (individual) => individual?.last_name,
   (individual) => individual?.dob,
-  (individual) => individual?.location_id,
+  (individual) => individual?.json_ext?.location_str,
 ];
 
 export { IndividualTaskTableHeaders, IndividualTaskItemFormatters };
